@@ -1,15 +1,35 @@
 <?php
-namespace N;
-require 'fxc/fxc.php';
+
+namespace fxc; // pas terrible mais c'est le seul moyen...
+require_once 'fxc/xhtml5.php';
+
+//
+// demo phpfxc !
+//
+
+$p1 = P('ceci est un ', Strong('paragraphe'), ' composé de mots, lesquels sont composés de lettres. trop bien.');
+
+$list = Ul( Li('faire les courses')
+	    ,Li('donner à manger à ', Em(class_('uneclasse'), 'popol'))
+	    ,Li('...')
+	   );
+
+$doc = Html( lang('fr')
+	     ,Head( Meta(charset('UTF-8')) )
 
 
-$list = Elem('ul', Elem('li', 'first' )
-	     ,Elem('li', 'second')
-	     ,Elem('li', attr('class', 'red'), '"<\'Bonjour\'>" ', Elem('strong', 'mon amis'), ', comment vas tu ?')
-   );
+	     ,Body( Header('je suis un ', A(href('http://nyan.cat'), 'header'))
+		    
+		    ,H1('Un paragraphe'), $p1
+		    ,H2('Une liste'), $list
+		    
+		    ,Footer('je suis un pied... de page !!! trop bien.')
+		    )
+	     );
 
 
-echoXml($list);
+echoXml($doc);
+
 
 
 

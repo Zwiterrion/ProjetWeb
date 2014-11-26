@@ -1,5 +1,7 @@
 <?php
 
+namespace fxc;
+
 const PARENT_EMPTY     = 0;
 const PARENT_NONEMPTY  = 1;
 
@@ -47,7 +49,7 @@ function Element($name, $args)
 
       foreach($args as $arg)
       {
-	 if ($arg instanceof Closure)
+	 if ($arg instanceof \Closure)
 	 {
 	    $arg( $out, $state2, PARENT_NONEMPTY );
 	 }
@@ -70,7 +72,7 @@ function Element($name, $args)
    };
 }
 
-function Empty($name) {
+function Empty_($name) {
    $args = func_get_args();
    array_shift($args);
    return EmptyElement($name, $args);
@@ -93,7 +95,7 @@ function EmptyElement($name, $args)
 
       foreach($args as $arg)
       {
-	 if ($arg instanceof Closure)
+	 if ($arg instanceof \Closure)
 	 {
 	    $arg( $out, $state2, PARENT_EMPTY );
 	 }

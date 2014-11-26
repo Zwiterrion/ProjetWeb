@@ -1,7 +1,7 @@
 <?php
 
 
-// pompé des sources de BlazeHtml <3
+// liste des balises/attributs pompé des sources de BlazeHtml <3
 $dialects = 
    [ 'xhtml5' => [ 'elements' =>  ['a', 'abbr', 'address', 'article', 'aside', 'audio', 'b'
 				   , 'bdo', 'blockquote', 'body', 'button', 'canvas', 'caption', 'cite'
@@ -55,22 +55,25 @@ $dialects =
 
 
 
-
 foreach ($dialects as $name => $desc)
 {
    $file = fopen("$name.php", 'w') or die("Unable to open file!");
 
-   $header = <<<EOS
+   $header = <<<END
+<?php
 // $name.php
-// Combinateurs pour le dialecte xml $name
+// combinateurs phpfxc pour le dialecte xml $name
 //
-// Code php généré par phpfxc, dévellopé spécialement pour le projet.
-// Voir fxc/fxc.php et fxc/generate.php
+// code php généré par phpfxc, dévellopé spécialement pour le projet
+// voir fxc/fxc.php et fxc/generate.php
+//
 //
 
-      
+namespace fxc;      
+require_once 'fxc.php';
 
-      EOS;
+
+END;
 
    fwrite($file, $header);
 
@@ -84,49 +87,79 @@ foreach ($dialects as $name => $desc)
 
    fwrite($file, "\n\n// Attributes\n");
    foreach($desc['attributes'] as $e)
-      fwrite($file, attributes($e) . "\n");
-
+      fwrite($file, attribute($e, $desc) . "\n");
+   
    fclose($file);
 }
 
 
 
 
-function element($name_)
+function element($name)
 {
-   $name = elemName($names_);
-   return 'function '. $name .'() { $p=func_get_args(); array_shift($p); return Element('. $name .', $args); }';
+   $name_ = elemName($name);
+   return "function $name_() { return Element('$name', func_get_args()); }";
 }
 
-function emptyElement($name_)
+function emptyElement($name)
 {
-   $name = elemName($names_);
-   return 'function '. $name .'() { $p=func_get_args(); array_shift($p); return EmptyElement('. $name .', $args); }';
+   $name_ = elemName($name);
+   return "function $name_() { return EmptyElement('$name', func_get_args()); }";
 }
 
-function attribute($name_)
+function attribute($name, $desc)
 {
-   $name = attrName($name_);
-   return 'function '. $name .'($v) { return attr('. $name .', $v); }';
+   $name_ = attrName($name, $desc);
+   return "function $name_(\$v) { return attr('$name', \$v); }";
 }
+
 
 function elemName($name)
 {
+
+   $reserved = ['__halt_compiler', 'abstract', 'and', 'array', 'as', 'break'
+		, 'callable', 'case', 'catch', 'class', 'clone'
+		, 'const', 'continue', 'declare', 'default', 'die'
+		, 'do', 'echo', 'else', 'elseif', 'empty'
+		, 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch'
+		, 'endwhile', 'eval', 'exit', 'extends', 'final'
+		, 'for', 'foreach', 'function', 'global', 'goto'
+		, 'if', 'implements', 'include', 'include_once', 'instanceof'
+		, 'insteadof', 'interface', 'isset', 'list', 'namespace'
+		, 'new', 'or', 'print', 'private', 'protected'
+		, 'public', 'require', 'require_once', 'return', 'static'
+		, 'switch', 'throw', 'trait', 'try', 'unset'
+		, 'use', 'var', 'while', 'xor'];
+
+
+
    $az = array_map( function ($c)
 		    {
-		       if ($c < 'A' and $c > 'z')
-			  return ' ';
-		       else
+		       if (($c >= 'A' and $c <= 'z') or ($c >= '0' and $c <= '9'))
 			  return $c;
+		       else
+			  return ' ';
 		    }
 		    , str_split($name));
 
-   return str_replace(' ', '', ucwords($az) );
+   $res = str_replace(' ', '', ucwords(implode($az)) );
+
+   if (in_array(strtolower($res), $reserved))
+      return $res.'_';
+   else
+      return $res;
 }
-function attrName($name)
+function attrName($name, $desc)
 {
    $res = elemName($name);
    $res[0] = strtolower($res[0]);
-   return $res;
+
+   if (in_array(strtolower($res), $desc['elements']) or in_array(strtolower($res), $desc['emptyElements']))
+      return $res.'_';
+   else
+      return $res;
 }
+
+
+
 
