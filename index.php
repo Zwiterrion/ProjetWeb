@@ -6,6 +6,7 @@ require_once 'templates.php';
 
 
 echo "<!DOCTYPE html>";
+    
 
 echoXml( page("e-Music", '', ''));
 

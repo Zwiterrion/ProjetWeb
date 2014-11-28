@@ -18,12 +18,12 @@ function page($title, $section, $body)
 				      ,li(A(href('catalogue.php'), 'Catalogue')), ' '
 				      ,li(A(href('connexion.php'), 'Connexion')), ' '
 				      ,li(A(href('about.php'), 'About')), ' '))
-			     )
+			     
 		     
 		     ,form( input(type('text'),class_('search'),placeholder('Search...')),
 			    input(type('button'),class_('search_button'),value('Search'))
 			    )				      
-				              
+				 )
 				  
 		     
 	      
