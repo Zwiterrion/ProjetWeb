@@ -69,7 +69,7 @@ foreach ($dialects as $name => $desc)
 //
 //
 
-namespace fxc;      
+namespace fxc\$name;      
 require_once 'fxc.php';
 
 
