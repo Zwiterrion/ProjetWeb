@@ -1,41 +1,27 @@
 <?php
+    
+    namespace fxc; // pas terrible mais c'est le seul moyen...
+    require_once 'fxc/xhtml5.php';
+    require_once 'templates.php';
 
-namespace fxc; // pas terrible mais c'est le seul moyen...
-require_once 'fxc/xhtml5.php';
+    require('Data.php');
+    
+    error_reporting(E_ALL);
+    ini_set('display_errors', 'On');
+    
+    echo "<!DOCTYPE html>";
+    
+    
+    echoXml( page("e-Music", '', ''));
+    
 
-//
-// demo phpfxc !
-//
-
-$p1 = P('ceci est un ', Strong('paragraphe'), ' composé de mots, lesquels sont composés de lettres. trop bien.');
-
-$list = Ul( Li(A('faire les courses'))
-	    ,Li('donner à manger à ', Em(class_('uneclasse'), 'popol'))
-	    ,Li('...')
-   );
-
-$doc = Html( lang('fr')
-	     ,Head( Meta(charset('UTF-8')) )
-	     
-	     
-	     ,Body( Header('je suis un ', A(href('http://nyan.cat'), 'header'))
-		    
-		    ,H1('Un paragraphe'), $p1
-		    ,H2('Une liste'), $list
-		    
-		    ,Footer('je suis un pied... de page !!! trop bien.')
-		)
-   );
-
-
-
-
-
-echoXml($doc);
-
-
-
-
-
+    $d = new Data();
+    $arrayM = $d->getAllMusicians('A');
+    
+    foreach ($arrayM as $value) {
+        echo $value['Nom_Musicien'];
+    }
+    
+?>
 
 

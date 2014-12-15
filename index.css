@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: black;
+    position: relative;
+}
+header nav {
+    display: inline-block;
+}
+header nav ul {
+    font-family: Verdana, Times, serif;
+    font-size: 15px;
+    display: block;
+    background-color: black;
+    margin: 0;
+}
+header nav li {
+    display:inline-block;
+    text-decoration: none;
+}
+header nav a {
+
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-size: 1.3em;
+    font-family: "DejaVu Sans Light",ff-dejavu-sans-light,"DejaVu Sans",Verdana,"Bitstream Vera Sans",Geneva,sans-serif;
+    padding-top : 5px;
+    padding-bottom: 7px;
+    margin-right: 50px;
+
+}
+header nav li:first-child {
+    font-size: 2em;
+}
+
+.search {
+    padding: 4px;
+    border-style: solid;
+}
+.search_button {
+    padding: 3px;
+    border-style: solid;
+}
+form {
+    text-align: right;
+    display:inline-block;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    
+
+}
+
+
+ 
+
+
