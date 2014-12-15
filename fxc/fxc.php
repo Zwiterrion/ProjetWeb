@@ -25,6 +25,35 @@ function echoXml($elem) {
 }
 
 
+function concat()
+{
+   $args = func_get_args();
+
+   return function($out, &$state, $parent) use($args)
+   {
+      if ($parent === PARENT_EMPTY)
+	 return;
+	 
+      foreach($args as $arg)
+      {
+	 if ($arg instanceof \Closure)
+	 {
+	    $arg( $out, $state, PARENT_NONEMPTY );
+	 }
+	 else
+	 {
+	    if ($state === STATE_ATTRIBUTES)
+	    {
+	       $state = STATE_CONTENT;
+	       $out->write('>');
+	    }
+	    
+	    $out->write( htmlspecialchars((string) $arg) );
+	 }
+      }
+   };
+}
+
 
 function Elem($name) {
    $args = func_get_args();

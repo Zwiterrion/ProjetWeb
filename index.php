@@ -11,8 +11,11 @@
     
     echo "<!DOCTYPE html>";
     
+
+
+$test = concat("kikoo", p("tamere"));
     
-    echoXml( page("e-Music", '', ''));
+    echoXml( page("e-Music", '', $test));
     
 
     $d = new Data();

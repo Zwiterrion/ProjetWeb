@@ -24,6 +24,12 @@ class Data {
         return $arrayMusicians;
     }
 
+
+    function get($search, $restrictions)
+    {
+       
+    }
+
     function __toString() {
         return "ICI";
     }
