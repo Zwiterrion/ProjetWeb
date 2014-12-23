@@ -9,11 +9,12 @@
     
     echo "<!DOCTYPE html>";
     
-
-
-$test = concat("kikoo", p("tamere"));
+    $spotlight = form(class_('big_search'),div(
+                      input(type('text'),class_('search'),placeholder('Que voulez-vous ')),
+                      input(type('button'),class_('search_button'))));
     
-    echoXml( page("e-Music", '', ''));
+
+    echoXml( page("e-Music", '', $spotlight));
     
     
 ?>
