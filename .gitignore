@@ -1,0 +1,19 @@
+# .gitignore
+
+# Fichiers générés (compilation/objets...)
+*.o
+*.d
+*.hi
+/Builds
+
+# Fichiers temporaires/de sauvegarde auto...
+*.autosave
+*~
+\#*#
+
+# Fichiers cachés
+.*
+
+# NFS/Apache de l'IUT
+*.m2
+.nfs*
