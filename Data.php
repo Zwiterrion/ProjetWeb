@@ -1,41 +1,58 @@
 <?php
 
 namespace fxc;
-    use \PDO;
-    
+use \PDO;
+
 class Data {
+  
+  $MusiciansQuery = ['
+
+','' ];
+
+  $WorkQuery = ['
+
+','' ];
+
+  $AlbumQuery = ['
+
+','' ];
+
+  $RecordQuery = ['
+
+','' ];
+  
+
+  var $dbh;
+
+  public function __construct() {
     
-    var $dbh;
+    $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique", "ETD", "ETD");
 
-    public function __construct() {
-        
-        $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique", "ETD", "ETD");
+  }
 
-    }
-
-    function getAllMusicians($letter) {
-        
-        $arrayMusicians = array();
-        $requete = $this->dbh->prepare("Select * from Musicien where Nom_Musicien LIKE :nom  order by Nom_Musicien");
-        $requete->execute(array(':nom' => $letter.'%'));
-        while ($row = $requete->fetch()){
-            $arrayMusicians[] = $row;
-        }
-        return $arrayMusicians;
-    }
-
-
-    function get($search, $restrictions)
-    {
-       
-    }
-
+  function getAllMusicians($letter) {
     
-    function __toString() {
-        return "ICI";
+    $arrayMusicians = array();
+    $requete = $this->dbh->prepare("Select * from Musicien where Nom_Musicien LIKE :nom  order by Nom_Musicien");
+    $requete->execute(array(':nom' => $letter.'%'));
+    while ($row = $requete->fetch()){
+      $arrayMusicians[] = $row;
     }
+    return $arrayMusicians;
+  }
+
+
+  function catalogue()
+  {
+  }
+
+
+  
+  function __toString() {
+    return "ICI";
+  }
 }
-    
+
 
 
 ?>
