@@ -1,58 +1,139 @@
 <?php
 
-namespace fxc;
+//namespace fxc;
 use \PDO;
 
 class Data {
   
-  $MusiciansQuery = ['
+   const COMPOSERS  = "
+SELECT distinct Musicien.Code_Musicien as id, Prénom_Musicien as str1, Nom_Musicien as str2, '' as str3
+FROM Musicien	INNER JOIN Composer on Musicien.Code_Musicien = Composer.Code_Musicien
 
-','' ];
+				LEFT  JOIN Oeuvre             on Composer.Code_Oeuvre = Oeuvre.Code_Oeuvre
+				LEFT  JOIN Composition_Oeuvre on Oeuvre.Code_Oeuvre = Composition_Oeuvre.Code_Oeuvre
+				LEFT  JOIN Composition        on Composition_Oeuvre.Code_Composition = Composition.Code_Composition
+				LEFT  JOIN Enregistrement     on Composition.Code_Composition = Enregistrement.Code_Composition
+				LEFT  JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
+				LEFT  JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
+				LEFT  JOIN Album              on Disque.Code_Album = Album.Code_Album
+";
 
-  $WorkQuery = ['
+   const WORKS = "
+SELECT distinct Oeuvre.Code_Oeuvre as id, Titre_Oeuvre as str1, Sous_Titre as str2, '' as str3
+FROM Oeuvre		LEFT  JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
+				LEFT  JOIN Musicien           on Composer.Code_Musicien = Musicien.Code_Musicien
 
-','' ];
+				LEFT  JOIN Composition_Oeuvre on Oeuvre.Code_Oeuvre = Composition_Oeuvre.Code_Oeuvre
+				LEFT  JOIN Composition        on Composition_Oeuvre.Code_Composition = Composition.Code_Composition
+				LEFT  JOIN Enregistrement     on Composition.Code_Composition = Enregistrement.Code_Composition
+				LEFT  JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
+				LEFT  JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
+				LEFT  JOIN Album              on Disque.Code_Album = Album.Code_Album
+";
 
-  $AlbumQuery = ['
+   const ALBUMS = "
+SELECT distinct Album.Code_Album as id, Album.Titre_Album as str1, '' as str2, '' as str3
+FROM Album		LEFT JOIN Disque             on Album.Code_Album = Disque.Code_Album
+				LEFT JOIN Composition_Disque on Disque.Code_Disque = Composition_Disque.Code_Disque
+				LEFT JOIN Enregistrement     on Composition_Disque.Code_Morceau = Enregistrement.Code_Morceau
+				LEFT JOIN Composition        on Enregistrement.Code_Composition = Composition.Code_Composition
+				LEFT JOIN Composition_Oeuvre on Composition.Code_Composition = Composition_Oeuvre.Code_Composition
+				LEFT JOIN Oeuvre             on Composition_Oeuvre.Code_Oeuvre = Oeuvre.Code_Oeuvre
+				LEFT JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
+				LEFT JOIN Musicien           on Composer.Code_Musicien = Musicien.Code_Musicien
+";
 
-','' ];
+   const RECORDS = "
+SELECT distinct Enregistrement.Code_Morceau as id, Album.Titre_Album as str1, '' as str2, '' as str3
+FROM Enregistrement	LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
+					LEFT JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
+					LEFT JOIN Album              on Disque.Code_Album = Album.Code_Album
 
-  $RecordQuery = ['
-
-','' ];
+					LEFT JOIN Composition        on Enregistrement.Code_Composition = Composition.Code_Composition
+					LEFT JOIN Composition_Oeuvre on Composition.Code_Composition = Composition_Oeuvre.Code_Composition
+					LEFT JOIN Oeuvre             on Composition_Oeuvre.Code_Oeuvre = Oeuvre.Code_Oeuvre
+					LEFT JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
+					LEFT JOIN Musicien           on Composer.Code_Musicien = Musicien.Code_Musicien
+";
   
 
-  var $dbh;
+   var $dbh;
 
-  public function __construct() {
+   public function __construct() {
     
-    $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique", "ETD", "ETD");
+      $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique", "ETD", "ETD");
 
-  }
+   }
 
-  function getAllMusicians($letter) {
+   function getAllMusicians($letter) {
     
-    $arrayMusicians = array();
-    $requete = $this->dbh->prepare("Select * from Musicien where Nom_Musicien LIKE :nom  order by Nom_Musicien");
-    $requete->execute(array(':nom' => $letter.'%'));
-    while ($row = $requete->fetch()){
-      $arrayMusicians[] = $row;
-    }
-    return $arrayMusicians;
-  }
+      $arrayMusicians = array();
+      $requete = $this->dbh->prepare("Select * from Musicien where Nom_Musicien LIKE :nom  order by Nom_Musicien");
+      $requete->execute(array(':nom' => $letter.'%'));
+      while ($row = $requete->fetch()){
+	 $arrayMusicians[] = $row;
+      }
+      return $arrayMusicians;
+   }
 
 
-  function catalogue()
-  {
-  }
+   function catalog($query, $search, $filters)
+   {
+      if (ctype_space($search))
+	 $search = '';
+	 
+      $query .= "\nWHERE 1=1";
+      
+      foreach ($filters as $k => $v)
+      {
+	 $query .= "\nAND $k = ?";
+      }
+
+      if ($search != '')
+	 $query .= "\nORDER BY str1, str2, str3";
+
+      $q = $this->dbh->prepare($query);
+      $q->execute($filters);
+
+      $res = new SortedList();
+      if ($search != '')
+	 while ($row = $q->fetch())
+	 {
+	    $score = max( fit($search, $row['str1'])
+			  ,fit($search, $row['str2'])
+			  ,fit($search, $row['str3'])
+	       );
+	    
+	    $res -> addSorted($score, $row);
+	 }
+      else
+	 while ($row = $q->fetch())
+	    $res -> push([-1, $row]);
+
+      $q -> closeCursor();
+      return $res;
+   }
 
 
-  
-  function __toString() {
-    return "ICI";
-  }
 }
 
 
 
-?>
+class SortedList extends SplDoublyLinkedList
+{
+   var $Max = 20;
+
+   public function addSorted($k, $v)
+   {
+      foreach($this as $i => $item)
+      {
+	 if ($item[0] < $k)
+	    break;
+      }
+
+      add($i, [$k,$v]);
+
+      if (count() > $Max)
+	 pop();
+   }
+}

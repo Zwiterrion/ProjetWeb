@@ -1,30 +1,40 @@
 <?php
     
-    namespace fxc; // pas terrible mais c'est le seul moyen...
-    require_once 'fxc/xhtml5.php';
-    require_once 'templates.php';
+namespace fxc;
+require_once 'fxc/xhtml5.php';
+require_once 'templates.php';
+require_once 'Data.php';
+
+function addF(&$filters, $field, $arg) {
+   if (isset($_GET[$arg]))
+      $filters[$field] = $_GET[$arg];
+}
+
+$filters = [];
+addF($filters, 'Musicien.Code_Musicien'     , 'composer');
+addF($filters, 'Oeuvre.Code_Oeuvre'         , 'work'    );
+addF($filters, 'Album.Code_Album'           , 'album'   );
+addF($filters, 'Enregistrement.Code_Morceau', 'record'  );
+
+$data = new Data();
+$composers = $data -> catalog(Data::COMPOSERS, $_GET['search'], $filters);
+$works     = $data -> catalog(Data::WORKS    , $_GET['search'], $filters);
+$albums    = $data -> catalog(Data::ALBUMS   , $_GET['search'], $filters);
+$records   = $data -> catalog(Data::RECORDS  , $_GET['search'], $filters);
+$data = null;
+
+
+
+
+
     
-    require('Data.php');
     
-    error_reporting(E_ALL);
-    ini_set('display_errors', 'On');
-    
-    echo "<!DOCTYPE html>";
+echo "<!DOCTYPE html>";
+echoXml( page("e-Music", '', '', catalogHtml($composers, $works, $albums, $records)));
     
     
-    echoXml( page("e-Music", '', ''));
-    
-    
-    $d = new Data();
-    $arrayM = $d->getAllMusicians('A');
-    
-    
-    foreach ($arrayM as $value) {
-        echo '<li>'.$value['Nom_Musicien'].'<li>';
-    }
-    
-    
-    ?>
+
+
 
 
 
