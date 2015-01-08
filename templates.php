@@ -4,8 +4,18 @@
     require_once 'fxc/xhtml5.php';
     
     
-    function page($title, $section, $body)
+    function page($title, $section, $body, $user)
     {
+
+      $mLogin;
+
+      if(isset($user['login'])) {
+        $mLogin = A(class_('log'),href('logout.php'), 'Deconnexion [ ' . $user['login'] . ' ]' );
+      }
+      else {
+        $mLogin = A(class_('log'),href('login.php'), 'Connexion');
+      }
+        
         return Html(lang('fr')
                     
                     ,Head(Meta(charset('UTF-8')),
@@ -15,16 +25,12 @@
                           )
                     
                     ,Body( header( nav( Ul( li(A(href('index.php'), 'e-Music')), ' '
-                                           ,li(A(href('catalogue.php'), 'Catalogue')), ' '
-                                           ,li(A(href('connexion.php'), 'Connexion')), ' '
-                                           ,li(A(href('about.php'), 'About')), ' '))
+                                           ,li(A(href('catalog.php'), 'Catalogue')), ' '
+                                           ,li(A(href('about.php'), 'A propos')), ' '))
                                   
-                                  
+                                        ,$mLogin
                                   
                                   )
-                          
-                          
-                          
                           
                           
                           ,$body

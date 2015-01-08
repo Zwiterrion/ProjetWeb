@@ -1,30 +1,18 @@
 <?php
-    
-    namespace fxc; // pas terrible mais c'est le seul moyen...
+  
+    namespace fxc;
     require_once 'fxc/xhtml5.php';
     require_once 'templates.php';
-    
-    require('Data.php');
-    
+    require_once 'session.php';
+
+    $user = session();
+
     error_reporting(E_ALL);
-    ini_set('display_errors', 'On');
-    
+    ini_set('display_errors', 'On');    
+
     echo "<!DOCTYPE html>";
+    echoXml( page("e-Music", '', '', $user));   
     
-    
-    echoXml( page("e-Music", '', ''));
-    
-    
-    $d = new Data();
-    $arrayM = $d->getAllMusicians('A');
-    
-    
-    foreach ($arrayM as $value) {
-        echo '<li>'.$value['Nom_Musicien'].'<li>';
-    }
-    
-    
-    ?>
 
 
 
