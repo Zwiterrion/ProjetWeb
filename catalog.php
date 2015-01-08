@@ -25,6 +25,8 @@ $albums    = $data -> catalog(\Data::ALBUMS   , $_GET['search'], $filters);
 $records   = $data -> catalog(\Data::RECORDS  , $_GET['search'], $filters);
 $data = null;
 
+
+
 $body = fxc\catalogHtml($composers, $works, $albums, $records);
 
 echo "<!DOCTYPE html>";
