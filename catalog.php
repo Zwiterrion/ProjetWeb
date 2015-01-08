@@ -1,11 +1,9 @@
 <?php
 
-namespace fxc;
 require_once 'fxc/xhtml5.php';
 require_once 'templates.php';
 require_once 'Data.php';
 require_once 'session.php';
-
 
 $user = session();
 
@@ -27,10 +25,10 @@ $albums    = $data -> catalog(\Data::ALBUMS   , $_GET['search'], $filters);
 $records   = $data -> catalog(\Data::RECORDS  , $_GET['search'], $filters);
 $data = null;
 
-$body = catalogHtml($composers, $works, $albums, $records);
+$body = fxc\catalogHtml($composers, $works, $albums, $records);
 
 echo "<!DOCTYPE html>";
-echoXml( page("e-Music", '', $body));
+fxc\echoXml( fxc\page("e-Music", '', $body, $user));
 
 
 

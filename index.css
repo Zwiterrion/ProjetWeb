@@ -169,6 +169,27 @@ h1 {
     margin: 2px 0;
 }
 
+.catalog {
+    
+    margin: auto;
+}
+
+.catalog div {
+    width: 25%;
+    display: inline-block;     
+    vertical-align: top;
+}
+.catalog table {
+    
+     background-color: rgba(0,0,0,0.7);
+     margin: 10px;
+     display : block;
+}
+
+.catalog table td {
+    
+    color: white;
+}
 
 
 

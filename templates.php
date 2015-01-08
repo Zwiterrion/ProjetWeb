@@ -52,21 +52,21 @@ function forH($es, $f)
 
 function catalogHtml($composers, $works, $albums, $records)
 {
-   $c = Table( forH($composers, function($e) {
+   $c = div(Table( forH($composers, function($e) {
 	    return Tr( Td(Img(src(''))), Td($e[1]['str1']), Td($e[1]['str2']) );
-	 }));
+	 })));
   
-   $w = Table( forH($works, function($e) {
+   $w = div(Table( forH($works, function($e) {
 	    return Tr( Td(Img(src(''))), Td($e[1]['str1']), Td($e[1]['str2']) );
-	 }));
+	 })));
   
-   $a = Table( forH($albums, function($e) {
+   $a = div(Table( forH($albums, function($e) {
 	    return Tr( Td(Img(src(''))), Td($e[1]['str1']) );
-	 }));
+	 })));
   
-   $r = Table( forH($records, function($e) {
+   $r = div(Table( forH($records, function($e) {
 	    return Tr( Td($e[1]['str1']) );
-	 }));
+	 })));
 
   
    return Div(class_('catalog'), $c, $w, $a, $r );
