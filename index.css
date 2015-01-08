@@ -191,7 +191,15 @@ h1 {
     color: white;
 }
 
+.catalog img
+{
+    width: 150px;
+}
 
+.catalog table a
+{
+    color: white;
+}
 
 
 

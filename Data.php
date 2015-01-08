@@ -165,15 +165,19 @@ class Data {
       {
 	 $query .= "\n AND $k = ?";
       }
-
+      
       if ($search == '')
 	 $query .= "\n ORDER BY str1, str2, str3";
-
-
+      
+      
+      //echo "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n$query\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
+      
       $q = $this->dbh->prepare($query);
-      $q->execute($filters);
-
+      $q->execute(array_values($filters));
+      
       $res = new SortedList();
+      $res->Max = 21;
+
       if ($search != '')
 	 while ($row = $q->fetch())
 	 {
@@ -185,7 +189,7 @@ class Data {
 	    $res -> addSorted($score, $row);
 	 }
       else
-	 while (($row = $q->fetch()) && $res->count() < $res->Max)
+	 while (($row = $q->fetch()) && $res->count() < 200)
 	    $res -> push(new KeyValue(-1, $row));
       
       $q -> closeCursor();

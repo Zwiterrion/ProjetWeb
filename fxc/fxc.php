@@ -25,10 +25,16 @@ function echoXml($elem) {
 }
 
 
-function concat()
+function wrp($w) {
+   return function() use($w) {
+      return concat( $w(concatArray(func_get_args())) );
+   };
+}
+function concat() {
+   return concatArray(func_get_args());
+}
+function concatArray($args)
 {
-   $args = func_get_args();
-
    return function($out, &$state, $parent) use($args)
    {
       if ($parent === PARENT_EMPTY)
