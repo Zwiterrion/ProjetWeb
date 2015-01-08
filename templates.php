@@ -46,19 +46,19 @@ function forH($es, $f)
 function catalogHtml($composers, $works, $albums, $records)
 {
    $c = Table( forH($composers, function($e) {
-	    return Tr( Td(Img(src(''))), Td($e[1]['str1']), Td($e[1]['str2']) );
+	    return Tr( Td(Img(src(''))), Td($e->Elem->Value['str1']), Td($e->Elem->Value['str2']) );
 	 }));
-  
+
    $w = Table( forH($works, function($e) {
-	    return Tr( Td(Img(src(''))), Td($e[1]['str1']), Td($e[1]['str2']) );
+	    return Tr( Td(Img(src(''))), Td($e->Elem->Value['str1']), Td($e->Elem->Value['str2']) );
 	 }));
   
    $a = Table( forH($albums, function($e) {
-	    return Tr( Td(Img(src(''))), Td($e[1]['str1']) );
+	    return Tr( Td(Img(src(''))), Td($e->Elem->Value['str1']) );
 	 }));
   
    $r = Table( forH($records, function($e) {
-	    return Tr( Td($e[1]['str1']) );
+	    return Tr( Td($e->Elem->Value['str1']) );
 	 }));
 
   

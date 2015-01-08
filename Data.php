@@ -1,5 +1,6 @@
 <?php
 
+require_once 'list.php';
 require_once 'search.php';
 
 //namespace fxc;
@@ -60,11 +61,11 @@ class Data {
   
 
    var $dbh;
-
+   
    public function __construct() {
-    
+      
       $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique_Web", "ETD", "ETD");
-
+      
    }
 
    function getAllMusicians($letter) {
@@ -110,77 +111,13 @@ class Data {
 	    $res -> addSorted($score, $row);
 	 }
       else
-	 while (($row = $q->fetch()) && $res->count() <= $res->Max)
-	    $res -> push([-1, $row]);
-
+	 while (($row = $q->fetch()) && $res->count() < $res->Max)
+	    $res -> push(new KeyValue(-1, $row));
+      
       $q -> closeCursor();
+      
+      
       return $res;
    }
-
-
 }
 
-
-
-class SortedList extends SplDoublyLinkedList
-{
-   var $Max = 20;
-
-   public function addSorted($k, $v)
-   {
-      foreach($this as $i => $item)
-      {
-	 if ($item[0] < $k)
-	    break;
-      }
-
-      parent::add($i, [$k,$v]);
-
-      if (count() > $Max)
-	 pop();
-   }
-}
-/*
-class KeyValue
-{
-   public $Key;
-   public $Value;
-}
-
-class List
-{
-   var $First;
-   var $Last;
-   var $Count;
-
-   function push($e)
-   {
-      $Pushed = new Elem($Last,$e,null);
-      $Last->Next = $Pushed;
-      
-   }
-   
-   function pop()
-   {
-   }
-
-}
-
-class Elem
-{
-   public function __construct($prev,$elem,$next)
-   {
-      $this->Prev = $prev;
-      $this->Elem = $elem;
-      $this->Next = $next;
-   }
-
-   public $Prev;
-   public $Elem;
-   publix $Next;
-}
-
-
-
-
-*/
