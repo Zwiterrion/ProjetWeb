@@ -53,20 +53,20 @@ function forH($es, $f)
 function catalogHtml($composers, $works, $albums, $records)
 {
    $c = div(Table( forH($composers, function($e) {
-	    return Tr( Td(Img(src(''))), Td($e[1]['str1']), Td($e[1]['str2']) );
-	 })));
+	       return Tr( Td(Img(src(''))), Td($e->Elem->Value['str1']), Td($e->Elem->Value['str2']) );
+	    })));
   
    $w = div(Table( forH($works, function($e) {
-	    return Tr( Td(Img(src(''))), Td($e[1]['str1']), Td($e[1]['str2']) );
-	 })));
+	       return Tr( Td(Img(src(''))), Td($e->Elem->Value['str1']), Td($e->Elem->Value['str2']) );
+	    })));
   
    $a = div(Table( forH($albums, function($e) {
-	    return Tr( Td(Img(src(''))), Td($e[1]['str1']) );
-	 })));
+	       return Tr( Td(Img(src(''))), Td($e->Elem->Value['str1']) );
+	    })));
   
    $r = div(Table( forH($records, function($e) {
-	    return Tr( Td($e[1]['str1']) );
-	 })));
+	       return Tr( Td($e->Elem->Value['str1']) );
+	    })));
   
    return Div(class_('catalog'), $c, $w, $a, $r );
 }
