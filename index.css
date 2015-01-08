@@ -79,6 +79,14 @@ header nav li:first-child {
     border-radius: 10px;
 }
 
+.catalog
+{
+}
+.catalog table
+{
+    display: inline-block;
+    
+}
 
 
 

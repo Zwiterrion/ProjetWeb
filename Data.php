@@ -1,5 +1,7 @@
 <?php
 
+require_once 'search.php';
+
 //namespace fxc;
 use \PDO;
 
@@ -61,7 +63,7 @@ class Data {
 
    public function __construct() {
     
-      $this->dbh = new PDO("dblib:Server=125.0.0.1:4242;Database=Classique", "ETD", "ETD");
+      $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique_Web", "ETD", "ETD");
 
    }
 
@@ -79,9 +81,9 @@ class Data {
 
    function catalog($query, $search, $filters)
    {
-      //if (ctype_space($search))
-	// $search = '';
-	 
+      if (ctype_space($search))
+	 $search = '';
+      
       $query .= "\n WHERE 1=1";
       
       foreach ($filters as $k => $v)
@@ -92,16 +94,10 @@ class Data {
       if ($search == '')
 	 $query .= "\n ORDER BY str1, str2, str3";
     
-    $query .= ';';
-
-      //$q = $this->dbh->prepare($query);
-    $q = $this->dbh->query($query);
-      //$q->execute($filters);
-
     
-    echo $query;
-    var_dump($q->fetchAll());
-
+      $q = $this->dbh->prepare($query);
+      $q->execute($filters);
+    
       $res = new SortedList();
       if ($search != '')
 	 while ($row = $q->fetch())
@@ -110,11 +106,11 @@ class Data {
 			  ,fit($search, $row['str2'])
 			  ,fit($search, $row['str3'])
 	       );
-      
+	    
 	    $res -> addSorted($score, $row);
 	 }
       else
-	 while ($row = $q->fetch())
+	 while (($row = $q->fetch()) && $res->count() <= $res->Max)
 	    $res -> push([-1, $row]);
 
       $q -> closeCursor();
@@ -138,9 +134,53 @@ class SortedList extends SplDoublyLinkedList
 	    break;
       }
 
-      add($i, [$k,$v]);
+      parent::add($i, [$k,$v]);
 
       if (count() > $Max)
 	 pop();
    }
 }
+/*
+class KeyValue
+{
+   public $Key;
+   public $Value;
+}
+
+class List
+{
+   var $First;
+   var $Last;
+   var $Count;
+
+   function push($e)
+   {
+      $Pushed = new Elem($Last,$e,null);
+      $Last->Next = $Pushed;
+      
+   }
+   
+   function pop()
+   {
+   }
+
+}
+
+class Elem
+{
+   public function __construct($prev,$elem,$next)
+   {
+      $this->Prev = $prev;
+      $this->Elem = $elem;
+      $this->Next = $next;
+   }
+
+   public $Prev;
+   public $Elem;
+   publix $Next;
+}
+
+
+
+
+*/
