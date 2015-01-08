@@ -6,8 +6,8 @@ use \PDO;
 class Data {
   
    const COMPOSERS  = "
-SELECT distinct Musicien.Code_Musicien as id, Prénom_Musicien as str1, Nom_Musicien as str2, '' as str3
-FROM Musicien	INNER JOIN Composer on Musicien.Code_Musicien = Composer.Code_Musicien
+ SELECT distinct Musicien.Code_Musicien as id, Prénom_Musicien as str1, Nom_Musicien as str2, '' as str3
+ FROM Musicien	INNER JOIN Composer on Musicien.Code_Musicien = Composer.Code_Musicien
 
 				LEFT  JOIN Oeuvre             on Composer.Code_Oeuvre = Oeuvre.Code_Oeuvre
 				LEFT  JOIN Composition_Oeuvre on Oeuvre.Code_Oeuvre = Composition_Oeuvre.Code_Oeuvre
@@ -19,8 +19,8 @@ FROM Musicien	INNER JOIN Composer on Musicien.Code_Musicien = Composer.Code_Musi
 ";
 
    const WORKS = "
-SELECT distinct Oeuvre.Code_Oeuvre as id, Titre_Oeuvre as str1, Sous_Titre as str2, '' as str3
-FROM Oeuvre		LEFT  JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
+ SELECT distinct Oeuvre.Code_Oeuvre as id, Titre_Oeuvre as str1, Sous_Titre as str2, '' as str3
+ FROM Oeuvre		LEFT  JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
 				LEFT  JOIN Musicien           on Composer.Code_Musicien = Musicien.Code_Musicien
 
 				LEFT  JOIN Composition_Oeuvre on Oeuvre.Code_Oeuvre = Composition_Oeuvre.Code_Oeuvre
@@ -32,8 +32,8 @@ FROM Oeuvre		LEFT  JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code
 ";
 
    const ALBUMS = "
-SELECT distinct Album.Code_Album as id, Album.Titre_Album as str1, '' as str2, '' as str3
-FROM Album		LEFT JOIN Disque             on Album.Code_Album = Disque.Code_Album
+ SELECT distinct Album.Code_Album as id, Album.Titre_Album as str1, '' as str2, '' as str3
+ FROM Album		LEFT JOIN Disque             on Album.Code_Album = Disque.Code_Album
 				LEFT JOIN Composition_Disque on Disque.Code_Disque = Composition_Disque.Code_Disque
 				LEFT JOIN Enregistrement     on Composition_Disque.Code_Morceau = Enregistrement.Code_Morceau
 				LEFT JOIN Composition        on Enregistrement.Code_Composition = Composition.Code_Composition
@@ -44,8 +44,8 @@ FROM Album		LEFT JOIN Disque             on Album.Code_Album = Disque.Code_Album
 ";
 
    const RECORDS = "
-SELECT distinct Enregistrement.Code_Morceau as id, Album.Titre_Album as str1, '' as str2, '' as str3
-FROM Enregistrement	LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
+ SELECT distinct Enregistrement.Code_Morceau as id, Album.Titre_Album as str1, '' as str2, '' as str3
+ FROM Enregistrement	LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
 					LEFT JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
 					LEFT JOIN Album              on Disque.Code_Album = Album.Code_Album
 
@@ -61,7 +61,7 @@ FROM Enregistrement	LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau 
 
    public function __construct() {
     
-      $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique", "ETD", "ETD");
+      $this->dbh = new PDO("dblib:Server=125.0.0.1:4242;Database=Classique", "ETD", "ETD");
 
    }
 
@@ -79,21 +79,28 @@ FROM Enregistrement	LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau 
 
    function catalog($query, $search, $filters)
    {
-      if (ctype_space($search))
-	 $search = '';
+      //if (ctype_space($search))
+	// $search = '';
 	 
-      $query .= "\nWHERE 1=1";
+      $query .= "\n WHERE 1=1";
       
       foreach ($filters as $k => $v)
       {
-	 $query .= "\nAND $k = ?";
+	 $query .= "\n AND $k = ?";
       }
 
-      if ($search != '')
-	 $query .= "\nORDER BY str1, str2, str3";
+      if ($search == '')
+	 $query .= "\n ORDER BY str1, str2, str3";
+    
+    $query .= ';';
 
-      $q = $this->dbh->prepare($query);
-      $q->execute($filters);
+      //$q = $this->dbh->prepare($query);
+    $q = $this->dbh->query($query);
+      //$q->execute($filters);
+
+    
+    echo $query;
+    var_dump($q->fetchAll());
 
       $res = new SortedList();
       if ($search != '')
@@ -103,7 +110,7 @@ FROM Enregistrement	LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau 
 			  ,fit($search, $row['str2'])
 			  ,fit($search, $row['str3'])
 	       );
-	    
+      
 	    $res -> addSorted($score, $row);
 	 }
       else
