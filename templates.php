@@ -53,7 +53,7 @@ function forH($es, $f)
 function catalogHtml($composers, $works, $albums, $records)
 {
 
-   $c = div(Table( forH($composers, function($e) {
+   $c = Div(H2('Compositeurs'), Table( forH($composers, function($e) {
 
 	       $id = $e->Elem->Value['id'];
 	       $wrap = wrp(function($e) use($id) { 
@@ -66,7 +66,7 @@ function catalogHtml($composers, $works, $albums, $records)
 		  );
 	    })));
   
-   $w = div(Table( forH($works, function($e) {
+   $w = Div(H2('Œuvres'), Table( forH($works, function($e) {
 
 	       $id = $e->Elem->Value['id'];
 	       $wrap = wrp(function($e) use($id) { 
@@ -78,7 +78,7 @@ function catalogHtml($composers, $works, $albums, $records)
 		  );
 	    })));
   
-   $a = div(Table( forH($albums, function($e) {
+   $a = Div(H2('Albums'), Table( forH($albums, function($e) {
 
 	       $id = $e->Elem->Value['id'];
 	       $wrap = wrp(function($e) use($id) { 
@@ -90,7 +90,7 @@ function catalogHtml($composers, $works, $albums, $records)
 		  );
 	    })));
   
-   $r = div(Table( forH($records, function($e) {
+   $r = Div(H2('Morceaux'), Table( forH($records, function($e) {
 	       return Tr( Td( Audio(controls('controls'), Source(src('media.php?param=3&code='.$e->Elem->Value['id']), type('audio/mpeg'))) )
 			  ,Td($e->Elem->Value['str1']) );
 	    })));

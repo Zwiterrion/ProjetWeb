@@ -11,7 +11,7 @@ ini_set('display_errors', 'On');
 $user = session();
 
 $spotlight = div(id('barre'),form(class_('big_search'),method('GET'),action('catalog.php'),
-    div(input(type('text'),name('search'),class_('search'),placeholder('Que voulez-vous ')),
+    div(input(type('text'),name('search'),class_('search'),placeholder('Mouzhart, Bitehovent, Figaroute...')),
       input(type('button'),class_('search_button')))));
 
 echo "<!DOCTYPE html>";
