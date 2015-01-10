@@ -8,7 +8,7 @@ class Data {
   
    const COMPOSERS  = "
  SELECT distinct Musicien.Code_Musicien as id, Prénom_Musicien as str1, Nom_Musicien as str2, '' as str3
- FROM Musicien	INNER JOIN Composer on Musicien.Code_Musicien = Composer.Code_Musicien
+ FROM Musicien INNER JOIN Composer on Musicien.Code_Musicien = Composer.Code_Musicien
 
 				LEFT  JOIN Oeuvre             on Composer.Code_Oeuvre = Oeuvre.Code_Oeuvre
 				LEFT  JOIN Composition_Oeuvre on Oeuvre.Code_Oeuvre = Composition_Oeuvre.Code_Oeuvre
@@ -17,11 +17,14 @@ class Data {
 				LEFT  JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
 				LEFT  JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
 				LEFT  JOIN Album              on Disque.Code_Album = Album.Code_Album
+
+                                LEFT JOIN Achat  on Enregistrement.Code_Morceau = Achat.Code_Enregistrement
+                                LEFT JOIN Abonné on Achat.Code_Abonné = Abonné.Code_Abonné
 ";
 
    const WORKS = "
  SELECT distinct Oeuvre.Code_Oeuvre as id, Titre_Oeuvre as str1, Sous_Titre as str2, '' as str3
- FROM Oeuvre		LEFT  JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
+ FROM Oeuvre	                LEFT  JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
 				LEFT  JOIN Musicien           on Composer.Code_Musicien = Musicien.Code_Musicien
 
 				LEFT  JOIN Composition_Oeuvre on Oeuvre.Code_Oeuvre = Composition_Oeuvre.Code_Oeuvre
@@ -30,11 +33,14 @@ class Data {
 				LEFT  JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
 				LEFT  JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
 				LEFT  JOIN Album              on Disque.Code_Album = Album.Code_Album
+
+                                LEFT JOIN Achat  on Enregistrement.Code_Morceau = Achat.Code_Enregistrement
+                                LEFT JOIN Abonné on Achat.Code_Abonné = Abonné.Code_Abonné
 ";
 
    const ALBUMS = "
  SELECT distinct Album.Code_Album as id, Album.Titre_Album as str1, '' as str2, '' as str3
- FROM Album		LEFT JOIN Disque             on Album.Code_Album = Disque.Code_Album
+ FROM Album                     LEFT JOIN Disque             on Album.Code_Album = Disque.Code_Album
 				LEFT JOIN Composition_Disque on Disque.Code_Disque = Composition_Disque.Code_Disque
 				LEFT JOIN Enregistrement     on Composition_Disque.Code_Morceau = Enregistrement.Code_Morceau
 				LEFT JOIN Composition        on Enregistrement.Code_Composition = Composition.Code_Composition
@@ -42,11 +48,15 @@ class Data {
 				LEFT JOIN Oeuvre             on Composition_Oeuvre.Code_Oeuvre = Oeuvre.Code_Oeuvre
 				LEFT JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
 				LEFT JOIN Musicien           on Composer.Code_Musicien = Musicien.Code_Musicien
+
+                                LEFT JOIN Achat  on Enregistrement.Code_Morceau = Achat.Code_Enregistrement
+                                LEFT JOIN Abonné on Achat.Code_Abonné = Abonné.Code_Abonné
+
 ";
 
    const RECORDS = "
- SELECT distinct Enregistrement.Code_Morceau as id, Enregistrement.Titre as str1, '' as str2, '' as str3
- FROM Enregistrement	LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
+ SELECT distinct Enregistrement.Code_Morceau as id, Abonné.Code_Abonné as cart, Enregistrement.Titre as str1, '' as str2, '' as str3
+ FROM Enregistrement                    LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
 					LEFT JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
 					LEFT JOIN Album              on Disque.Code_Album = Album.Code_Album
 
@@ -55,17 +65,21 @@ class Data {
 					LEFT JOIN Oeuvre             on Composition_Oeuvre.Code_Oeuvre = Oeuvre.Code_Oeuvre
 					LEFT JOIN Composer           on Oeuvre.Code_Oeuvre = Composer.Code_Oeuvre
 					LEFT JOIN Musicien           on Composer.Code_Musicien = Musicien.Code_Musicien
+
+                                        LEFT JOIN Achat  on Enregistrement.Code_Morceau = Achat.Code_Enregistrement
+                                        LEFT JOIN Abonné on Achat.Code_Abonné = Abonné.Code_Abonné
 ";
   
    var $dbh;
 
    public function __construct() {
       $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique_Web", "ETD", "ETD");
+      //$this->dbh = new PDO("dblib:host=info-simplet;dbname=Classique_Web", "ETD", "ETD");
    }
 
    public function delete($id, $codeAbonne) {
 
-      $stmt = $this->dbh->prepare("DELETE FROM Abonné WHERE Code_Enregistrement = ? AND 'Code_Abonné' = ? ");
+      $stmt = $this->dbh->prepare("DELETE FROM Achat WHERE Code_Enregistrement = ? AND Code_Abonné = ? ");
       $stmt->execute([$id,$codeAbonne]);
       $stmt->closeCursor();
 
@@ -73,9 +87,11 @@ class Data {
 
    public function add($id, $codeAbonne) {
 
-      $stmt = $this->dbh->prepare("INSERT INTO Abonné(Code_Enregistrement, Code_Abonné) VALUES (?,?) ");
+      $stmt = $this->dbh->prepare("INSERT INTO Achat(Code_Enregistrement, Code_Abonné) VALUES (?,?) ");
       $stmt->execute([$id,$codeAbonne]);
+      //echo "\n($id, $codeAbonne)\n";
       $stmt->closeCursor();
+      die;
    }
 
    public function insertIntoBase($login, $pass, $nom) {
@@ -102,8 +118,7 @@ class Data {
 
    public function checkIntoBase($login,$pass) {
 
-      $connexion = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique_Web", "ETD", "ETD");
-      $stmt = $connexion->prepare('SELECT * FROM Abonné WHERE Login = :pseudo AND Password = :pass');
+      $stmt = $this->dbh->prepare('SELECT * FROM Abonné WHERE Login = :pseudo AND Password = :pass');
       $stmt->execute(array(':pseudo' => $login, 
 			                      ':pass' => $pass));
       $result = $stmt->rowCount();
@@ -115,7 +130,7 @@ class Data {
       else  
       {
 	 $row = $stmt->fetch();
-	 return $row['Code_Abonné'];
+	 return $row[0];
       }
    }
 

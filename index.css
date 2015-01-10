@@ -3,14 +3,27 @@
 }
 
 
+html {
+    height: 100%;
+}
 body {
     margin: 0;
     padding: 0;
+    
     background: url("res/background.png") no-repeat center center fixed;
-    background-size:cover;
+    background-size: cover;
     font-family: "DejaVu Sans Light","DejaVu Sans",Verdana,"Bitstream Vera Sans",Geneva,sans-serif;
+
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
 }
-header {
+
+
+/*header {
     position: relative;
     font-size: 80%;
     color: rgba(255,255,255,0.7);
@@ -42,10 +55,60 @@ header nav a {
 }
 header nav li:first-child {
     font-size: 2em;
+}*/
+
+
+
+
+.btn
+{
+    display: inline-block;
+    background-color: rgba(255,255,255,0.8);
+    padding: 1px 3px;
+    color: rgb(50,50,50);
+    border-radius: 4px;
+    text-decoration: none;
+}
+.ctrlBar a
+{
+    color: inherit;
+    text-decoration: none;
+}
+.ctrlBar h1
+{
+    color: rgba(255,255,255,0.9);
+    font-weight: bold;
+    font-size: 110%;
+    text-shadow: 0 5px 15px black;
+    margin: 0 10px;
 }
 
-.catalog_search_bar {
-    margin: 30px 0;
+.welcome .ctrlBar h1
+{
+    font-size: 300%;
+}
+
+
+.ctrlBar, .catalog .col > div {
+    position: relative;
+    background-color: rgba(255,255,255,0.6);
+   /*box-shadow: 0 0 20px rgba(0,0,0,0.6);*/
+}
+
+.ctrlBar {
+    display: flex;
+    align-items: center;
+    margin: 0 0 4px 0;
+    padding: 5px;
+    color: rgb(50,50,50);
+ }
+
+.ctrlBar > *
+{
+    margin: 0 5px;
+}
+
+.welcome .ctrlBar {
     text-align: center;
     width: 100%;
     font-size: 120%;
@@ -53,7 +116,8 @@ header nav li:first-child {
   position: absolute;
   top: 50%;*/
 }
-.catalog_search_bar > div {
+
+.ctrlBar > form {
     display: inline-block;
 
     width: 40%;
@@ -62,10 +126,10 @@ header nav li:first-child {
     box-shadow: 0 5px 30px rgba(0,0,0,0.5);
     border-radius: 10px;
 
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.8);
 }
 
-.catalog_search_bar input {
+.ctrlBar input {
     display: inline-block;
     border: none;
     box-sizing: border-box;
@@ -73,21 +137,31 @@ header nav li:first-child {
     font-size: inherit;
 }
 
-.catalog_search_text {
+.searchText {
     background: transparent;
     border-radius: 10px 0 0 10px;
     width: 90%;
     padding: 5px 0 5px 10px;
     /*padding-left: 10px;*/
 }
-.catalog_search_button {
+.searchButton {
     width: 10%;
     background: url("res/search-icon.png") center center no-repeat;
     background-size: 1em;
     border-radius: 0 10px 10px 0;
     padding: 5px;
 }
-.search {
+
+.welcome .ctrlBar {
+    font-size: 200%;
+}
+.welcome .ctrlBar > form {
+    width: 50%;
+    max-width: 700px;
+}
+
+
+/*.search {
     padding: 4px;
     border: none;
     border-radius: 10px 0 0 10px;
@@ -122,14 +196,13 @@ header nav li:first-child {
     display: inline-block;
     box-shadow: 0 5px 30px rgba(0,0,0,0.5);
     border-radius: 10px;
-}
+}*/
 .catalog
 {
-}
-.catalog table
-{
-    display: inline-block;
-    
+    display: flex;
+    margin: 0;
+    min-height: 0px;
+    flex: 1;
 }
 
 .inscription {
@@ -176,7 +249,7 @@ header nav li:first-child {
     display: block;
 }
 
-h1 {  
+.inscription h1 {  
     color: white;
     padding: 4px;
     margin: 10px 0;
@@ -186,7 +259,7 @@ h1 {
 }
 
 
-.log {
+/*.log {
     
     text-decoration: none;
     color: white;
@@ -199,7 +272,7 @@ h1 {
     line-height: 280%;
     height: 100%;
 
-}
+}*/
 
 .error {
     
@@ -211,9 +284,20 @@ h1 {
 }
 
 .catalog .col {
+    display: flex;
+    flex-direction: column;
     width: 25%;
-    display: inline-block;     
+    height: 100%;
+    min-height: 0px;
     vertical-align: top;
+    margin-right: 4px;
+}
+.catalog .col:first-child {
+    margin-left: 4px;
+}
+.catalog .col > div {
+    padding: 5px;
+    box-shadow: 0 20px 15px -15px black;
 }
 
 
@@ -232,20 +316,24 @@ h1 {
 
 
 .catalog ul {
-    margin: 0;
+    min-height: 0px;
+    margin:  0;
     padding: 0;
+    overflow-y: auto;
 }
 .catalog li {
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.9);
     display: flex;
-    margin: 5px;
-    border-radius: 5px;
+    margin: 0 0 4px 0;
+    /*border-radius: 5px;*/
     height: 4em;
+    overflow: hidden;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.7);
 }
 
 .catalog li:first-child {
     height: 5em;
-    font-size: 150%;
+    font-size: 130%;
 }
 .catalog li:first-child .img {
     height: 5em;
@@ -256,6 +344,7 @@ h1 {
 .catalog li > :last-child {
     flex: 1;
     padding: 5px;
+    text-overflow: ellipsis;
 }
 
 .catalog li a {
@@ -263,16 +352,24 @@ h1 {
     color: white;
 }
 
-h2, .unsetFilter {
-    text-align: center;
-    background-color: rgba(0,0,0,0.7);
-    padding: 5px;
+.catalog h2 {
     display: inline-block;
-    width: 95%;
+    color: rgba(0,0,0,0.7);
+    font-size: 120%;
+    margin: 0 15px 0 0;
+}
+
+.unsetFilter, .ctrlBar .unsetFilter {
+    background-color: rgba(255,0,0,0.7);
     color: white;
-    margin: 5px;
-    border-radius: 5px;
-    text-decoration: none;
+    /*border: 1px solid white;*/
+}
+.cart {
+    background-color: rgba(220,220,255,0.8);
+}
+
+.stretch {
+    flex: 1;
 }
 
 /*
@@ -306,10 +403,6 @@ h2, .unsetFilter {
 }
 */
 
-.unsetFilter {
-    
-    background-color: rgba(255,0,0,0.5);
-}
 
 .Amazon a{
     

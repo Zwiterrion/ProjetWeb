@@ -37,7 +37,7 @@
 
       input(class_('connexion_item'),type('submit'),value("Connexion"))));
 
-      echoXml( page("e-Music", '', $formLogin, $user));
+      echoXml( page('inscription', '', $formLogin));
 
 
     ?>

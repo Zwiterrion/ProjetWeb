@@ -20,7 +20,7 @@
                       input(class_('connexion_item'),type('submit'),value("Connexion")),
                       A(class_('connexion_item'),href('inscription.php'), 'Inscription')));
 
-    echoXml( page("e-Music", '', $formLogin, $user));
+echoXml( page('connexion', '', $formLogin) );
 
 
 

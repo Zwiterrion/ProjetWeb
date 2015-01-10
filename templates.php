@@ -2,41 +2,22 @@
 
 namespace fxc; // pas terrible mais c'est le seul moyen...
 require_once 'fxc/xhtml5.php';
-require_once 'amazon/samples/Search/SimpleSearch.php';
 
-function page($title, $section, $body, $user)
+function page($title, $bodyclass, $body)
 {
+   $title = ($title != '') ? ' · '.$title : '';
 
-   $mLogin;
-
-   if(isset($user['login'])) {
-      $mLogin = A(class_('log'),href('logout.php'), 'Deconnexion [ ' . $user['login'] . ' ]' );
-   }
-   else {
-      $mLogin = A(class_('log'),href('login.php'), 'Connexion');
-   }
         
-   return Html(lang('fr')
+   return Html(lang('fr'),
                     
-	       ,Head(Meta(charset('UTF-8')),
-		     link(rel('stylesheet'),href('index.css'), type('text/css'))
-                          
-		     ,Title($title)
-		  )
-                    
-	       ,Body( header( nav( Ul( li(A(href('index.php'), 'e-Music')), ' '
-				       ,li(A(href('catalog.php'), 'Catalogue')), ' '
-				       ,li(A(href('about.php'), 'A propos')), ' '))
-                                  
-			      ,$mLogin
-                                  
-			 )
-                          
-                          
-		      ,$body
-		      ,Footer()
-		  )
-      );
+               Head( Meta(charset('UTF-8')),
+		     Link(rel('stylesheet'),href('index.css'), type('text/css')),
+                     Script(type("text/javascript"), src("all.js"), async('async')),
+		     Title('symphonaute'.$title)
+	       ),
+               
+	       Body(class_($bodyclass), $body)
+   );
 }
     
     
@@ -44,9 +25,9 @@ function page($title, $section, $body, $user)
 function forH($es, $f)
 {
    $res = '';
-   foreach($es as $e)
+   foreach($es as $k => $v)
    {
-      $res = concat($res, $f($e));
+      $res = concat($res, $f($k, $v));
    }
    return $res;
 }
@@ -55,60 +36,73 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
 {
    $args = filtersUrl($filters);
 
-   $c = Div(class_('col'), H2('Compositeurs'), unsetFilterButton('composer',$filters), Ul( forH($composers, function($e) use($args) {
-
+   $c = Div(class_('col'),
+            Div(H2('Compositeurs'), unsetFilterButton('composer',$filters)),
+            Ul( forH($composers, function($k,$e) use($args) {
+      
       $id = $e->Elem->Value['id'];
-
       $fname = $e->Elem->Value['str1'];
       if ($fname != '')
          $fname = concat($fname, Br());
-
+      
       return Li(
-         Span(class_('img'), style_("background-image: url(\"media.php?param=1&code=$id\");"))
-         ,A(href("?composer=$id&$args")
-            ,$fname
-            ,$e->Elem->Value['str2']
-      ));
+         Span(class_('img'), style_("background-image: url(\"media.php?param=1&code=$id\");")),
+         A( href("?composer=$id&$args"),
+            $fname,
+            $e->Elem->Value['str2']
+         ));
    })));
    
-   $w = Div(class_('col'), H2('Œuvres'), unsetFilterButton('work',$filters), Ul( forH($works, function($e) use($args) {
-
+   $w = Div(class_('col'),
+            Div(H2('Œuvres'), unsetFilterButton('work',$filters)),
+            Ul( forH($works, function($k,$e) use($args) {
+      
       $id = $e->Elem->Value['id'];
-      return Li(A(href("?work=$id&$args")
-         ,$e->Elem->Value['str1'], Br()
-	 ,$e->Elem->Value['str2']
-      ));
-   })));
+      return Li( A(href("?work=$id&$args"),
+                   $e->Elem->Value['str1'], Br(),
+	           $e->Elem->Value['str2'] ));
+      
+            })));
    
-   $a = Div(class_('col'), H2('Albums'), unsetFilterButton('album',$filters), Ul( forH($albums, function($e) use($args) {
-
+   $a = Div(class_('col'),
+            Div(H2('Albums'), unsetFilterButton('album',$filters)),
+            Ul( forH($albums, function($k,$e) use($args) {
+      
       $id = $e->Elem->Value['id'];
-      return Li(
-         Span(class_('img'), style_("background-image: url(\"media.php?param=2&code=$id\");"))
-         ,A(href("?album=$id&$args"), $e->Elem->Value['str1'])
-         
-         );
+      return Li( Span(class_('img'), style_("background-image: url(\"media.php?param=2&code=$id\");")),
+                 A(href("?album=$id&$args"), $e->Elem->Value['str1']) );
+      
    })));
    
-   $r = Div(class_('col'), H2('Morceaux'), unsetFilterButton('record',$filters), Ul( forH($records, function($e) use($args) {
-
+   $r = Div(class_('col'),
+            Div(H2('Morceaux'), unsetFilterButton('record',$filters)),
+            Ul( forH($records, function($k,$e) use($args) {
+      
       $id = $e->Elem->Value['id'];
-      return Li(
-         A(onclick('this.firstChild.play()'), Audio(id((string)$id), Source(src('media.php?param=3&code='.$id), type('audio/mpeg'))), 'lire')
-	 ,A(href("?record=$id&$args"), $e->Elem->Value['str1'])
-      );
+      return Li( A(onclick('this.firstChild.play()'), Audio(id((string)$id), Source(src('media.php?param=3&code='.$id), type('audio/mpeg'))), 'lire'),
+                 cartButton($id, isset($e->Elem->Value['cart'])),
+	         A(href("?record=$id&$args"), $e->Elem->Value['str1']) );
    })));
 
    
-   $amazon = search_amazon('mozart');
+   return Div(class_('catalog'), $c, $w, $a, $r);
+}
 
-   $list = div(class_('Amazon_div'),h1("Amazon"),
-         Ul(Li(class_('Amazon'),Img(src($amazon[2]))),Li(class_('Amazon'),A(href($amazon[1]),$amazon[0])),
-               Li(class_('Amazon'),Img(src($amazon[5]))),Li(class_('Amazon'),A(href($amazon[4]),$amazon[3])),
-                  Li(class_('Amazon'),Img(src($amazon[8]))),Li(class_('Amazon'),A(href($amazon[7]),$amazon[6]))));
+function amazonHtml($a)
+{
+   return Div(class_('Amazon_div'),h1("Amazon"),
+              Ul(Li(class_('Amazon'),Img(src($a[2]))),Li(class_('Amazon'),A(href($a[1]),$a[0])),
+                 Li(class_('Amazon'),Img(src($a[5]))),Li(class_('Amazon'),A(href($a[4]),$a[3])),
+                 Li(class_('Amazon'),Img(src($a[8]))),Li(class_('Amazon'),A(href($a[7]),$a[6]))));
+   
+}
 
+function cartButton($id, $checked)
+{
+   $checked = ($checked) ? checked('checked') : '';
 
-   return Div(class_('catalog'), searchBar('',$args), $c, $w, $a, $r, $list);
+   return Form(class_('cart'), Input(type('checkbox'), $checked
+                                     ,onclick("onCartButton(this,$id);")));
 }
 
 function unsetFilterButton($f,$filters)
@@ -116,17 +110,45 @@ function unsetFilterButton($f,$filters)
    if (isset($filters[$f]))
    {
       unset($filters[$f]);
-      return A(class_('unsetFilter'), href('?'.filtersUrl($filters)), 'retirer le filtre');
+      return unsetFilterButton_($filters);
    }
    else
       return '';
 }
 
-function searchBar($c, $args)
+function unsetFilterButton_($filters) {
+   return A(class_('unsetFilter btn'), href('?'.filtersUrl($filters)), 'retirer le filtre');
+}
+
+function ctrlBar($filters, $cart, $user)
 {
-   return Form( class_('catalog_search_bar '.$c),method('GET'),action("?$args"),
-                Div( Input(class_('catalog_search_text'), type('text'), name('search'), placeholder('Mouzhart, Bitehovent, Figaroute...') ),
-                     Input(class_('catalog_search_button'), type('submit'), value(' '))
-             ));
+   $mLogin;
+   if(isset($user['login'])) {
+      $mLogin = A(class_('log'),href('logout.php'), 'deconnexion (' . $user['login'] . ')' );
+   }
+   else {
+      $mLogin = A(class_('log'),href('login.php'), 'connexion');
+   }
+
+
+   $value = (isset($filters['search'])) ? $filters['search'] : '';
+   $cart  = ($cart) ? A(class_('cart btn'), href('?cart'), 'voir le panier · ') : '';
+
+   $filtersH = forH($filters, function($k, $v) {
+      return ($k!='search') ? Input(type('hidden'), name($k), value($v)) : '';
+   });
+
+   return Div( class_('ctrlBar'),
+               $filtersH,
+               H1(A(href('index.php'), 'symphonaute')),
+               
+               Form(method('GET'),action(''),
+                    Input(class_('searchText'), type('text'), name('search'), value($value), placeholder('mouzhart · bitehôvent · boulérot') ),
+                    Input(class_('searchButton'), type('submit'), value(' ')) ),
+               
+               unsetFilterButton('search', $filters),
+               Span(class_('stretch'), ''),
+               $cart, $mLogin, ' · ', A(class_('about'), href('about.php'), 'à propos')
+   );
 }
 

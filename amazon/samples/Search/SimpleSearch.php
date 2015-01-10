@@ -46,10 +46,10 @@ function search_amazon($value) {
   $search->setResponseGroup(array('Large', 'Small'));
 
 
-  $formattedResponse = $apaiIO->runOperation($search);
+   $formattedResponse = $apaiIO->runOperation($search);
 
 
-  $items = $formattedResponse['Items']['Item'];
+   $items = $formattedResponse['Items']['Item'];
 
   $compteur = 3;
 

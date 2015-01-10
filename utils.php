@@ -14,7 +14,7 @@ function reqGET($k) {
       return $_GET[$k];
    else
    {
-      echo "\n\n\"$k\" requis (reqGET), je décède.\n";
+      echo "\n\n\"$k\" requis (reqGET), je meurt.\n";
       die;
    }
 }
@@ -24,7 +24,7 @@ function reqPOST($k) {
       return $_POST[$k];
    else
    {
-      echo "\n\n\"$k\" requis (reqPOST), je décède.\n";
+      echo "\n\n\"$k\" requis (reqPOST), je meurt.\n";
       die;
    }
 }
