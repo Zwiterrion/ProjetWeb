@@ -22,50 +22,62 @@ use ApaiIO\ApaiIO;
 use ApaiIO\Configuration\GenericConfiguration;
 use ApaiIO\Operations\Search;
 
-$conf = new GenericConfiguration();
+function search_amazon($value) {
+  $conf = new GenericConfiguration();
 
-try {
+  try {
     $conf
-        ->setCountry('fr')
-        ->setAccessKey(AWS_API_KEY)
-        ->setSecretKey(AWS_API_SECRET_KEY)
-        ->setAssociateTag(AWS_ASSOCIATE_TAG)
-        ->setRequest('\ApaiIO\Request\Soap\Request')
-    	->setResponseTransformer('\ApaiIO\ResponseTransformer\ObjectToArray');
+    ->setCountry('fr')
+    ->setAccessKey(AWS_API_KEY)
+    ->setSecretKey(AWS_API_SECRET_KEY)
+    ->setAssociateTag(AWS_ASSOCIATE_TAG)
+    ->setRequest('\ApaiIO\Request\Soap\Request')
+    ->setResponseTransformer('\ApaiIO\ResponseTransformer\ObjectToArray');
 
-} catch (\Exception $e) {
+  } catch (\Exception $e) {
     echo $e->getMessage();
+  }
+  $apaiIO = new ApaiIO($conf);
+
+  $search = new Search();
+  $search->setCategory('Music');
+  $search->setKeywords($value);
+  $search->setPage(3);
+  $search->setResponseGroup(array('Large', 'Small'));
+
+
+  $formattedResponse = $apaiIO->runOperation($search);
+
+
+  $items = $formattedResponse['Items']['Item'];
+
+  $compteur = 3;
+
+  $arrayretour = array();
+  foreach ($items as $item) {
+   if($compteur > 0){
+    $features = $item['ItemAttributes'];
+    $url = $item['DetailPageURL'];
+    $title = $features['Title'];	
+    $image = $item['MediumImage'];
+    $img = $image['URL']; 
+    $picture = $img;
+		// $descrip = ' ';
+		// foreach ($features['Feature'] as $var) {
+		// 	$descrip .= '<br/>' .$var;
+		// }
+		// echo $descrip;
+    $arrayretour[] = $title; 
+    $arrayretour[] = $url;
+    $arrayretour[] = $picture;
+
+    $compteur--;
+    }
+  }
+  return $arrayretour;
 }
-$apaiIO = new ApaiIO($conf);
-
-$search = new Search();
-$search->setCategory('All');
-$search->setKeywords('String');
-$search->setPage(3);
-$search->setResponseGroup(array('Large', 'Small'));
 
 
-$formattedResponse = $apaiIO->runOperation($search);
-
-
-$items = $formattedResponse['Items']['Item'];
-
-$compteur = 3;
-foreach ($items as $item) {
-	if($compteur > 0){
-		$features = $item['ItemAttributes'];
-		echo $features['Title'];	
-		$image = $item['MediumImage'];
-		$img = $image['URL']; 
-		echo '<img src='.$img.' alt="Photo Absente"/>';
-		$descrip = ' ';
-		foreach ($features['Feature'] as $var) {
-			$descrip .= '<br/>' .$var;
-		}
-		echo $descrip;
-		$compteur--;
-	}
-}
 /*
    'Offers' => 
         array (size=4)
