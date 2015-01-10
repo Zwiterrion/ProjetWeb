@@ -286,8 +286,8 @@ h2, .unsetFilter {
 .catalog_li_album { 
 
     display: inline-block;
-    width: 120px;
-    padding: 0;
+    max-width: 120px;
+    padding-right: 20px;
     vertical-align: middle;
     position: relative;
     top: 8px;
@@ -297,3 +297,62 @@ h2, .unsetFilter {
     
     background-color: rgba(255,0,0,0.5);
 }
+
+.Amazon a{
+    
+    text-decoration: none;
+    color: white;
+}
+
+
+.Amazon {
+    
+    max-width: 200px;
+    display: inline-block;
+    vertical-align: top;
+    padding-right: 20px;
+}
+.Amazon img {
+    width:80px;
+}
+
+.Amazon_div ul {
+
+    padding: 10px;;
+    background-color: rgba(0,0,0,0.7);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
