@@ -64,7 +64,7 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
          $fname = concat($fname, Br());
 
       return Li(
-         Span(class_('img'), Img(src('media.php?param=1&code='.$id)))
+         Span(class_('img'), style_("background-image: url(\"media.php?param=1&code=$id\");"))
          ,A(href("?composer=$id&$args")
             ,$fname
             ,$e->Elem->Value['str2']
@@ -84,7 +84,7 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
 
       $id = $e->Elem->Value['id'];
       return Li(
-         Span(class_('img'), Img(src('media.php?param=2&code='.$id)))
+         Span(class_('img'), style_("background-image: url(\"media.php?param=2&code=$id\");"))
          ,A(href("?album=$id&$args"), $e->Elem->Value['str1'])
          
          );

@@ -223,15 +223,11 @@ h1 {
 .catalog .img {
     height: 4em;
     width:  4em;
-    overflow: hidden;
     border-radius: 5px 0 0 5px;
-}
-.catalog img {
-    min-width:  100%;
-    min-height: 100%;
-
-    width: 100%;
-    /*border: 1px solid rgba(255,255,255,0.2);*/
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 
