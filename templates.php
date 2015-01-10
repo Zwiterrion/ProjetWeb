@@ -58,10 +58,10 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
 
       $id = $e->Elem->Value['id'];
       $wrap = wrp(function($e) use($id,$args) { 
-	 return Td(A(href("?composer=$id&$args"), $e));
+	 return Li(class_('catalog_li'),A(href("?composer=$id&$args"), $e));
       });
       
-      return Tr ( $wrap( Img(src('media.php?param=1&code='.$id)) )
+      return Ul (class_('catalog_ul'), $wrap( Img(src('media.php?param=1&code='.$id)) )
                 , $wrap( $e->Elem->Value['str1'] )
                 , $wrap( $e->Elem->Value['str2'] )
       );
@@ -71,10 +71,10 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
 
       $id = $e->Elem->Value['id'];
       $wrap = wrp(function($e) use($id,$args) { 
-	 return Td(A(href("?work=$id&$args"), $e));
+	 return Li(class_('catalog_li_alone'),A(href("?work=$id&$args"), $e));
       });
 
-      return Tr( $wrap($e->Elem->Value['str1'])
+      return Ul(class_('catalog_ul'),$wrap($e->Elem->Value['str1'])
 	 ,$wrap($e->Elem->Value['str2'])
       );
    })));
@@ -83,10 +83,10 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
 
       $id = $e->Elem->Value['id'];
       $wrap = wrp(function($e) use($id,$args) { 
-	 return Td(A(href("?album=$id&$args"), $e));
+	 return Li(class_('catalog_li_album'),A(href("?album=$id&$args"), $e));
       });
 
-      return Tr( $wrap(Img(src('media.php?param=2&code='.$id)))
+      return Ul(class_('catalog_ul'),$wrap(Img(src('media.php?param=2&code='.$id)))
 	 ,$wrap($e->Elem->Value['str1'])
       );
    })));
@@ -95,10 +95,10 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
 
       $id = $e->Elem->Value['id'];
       $wrap = wrp(function($e) use($id,$args) { 
-	 return Td(A(href("?record=$id&$args"), $e));
+	 return Li(class_('catalog_li_alone'),A(href("?record=$id&$args"), $e));
       });
 
-      return Tr( $wrap( Audio(controls('controls'), Source(src('media.php?param=3&code='.$e->Elem->Value['id']), type('audio/mpeg'))) )
+      return Ul( class_('catalog_ul'),$wrap( Audio(controls('controls'), Source(src('media.php?param=3&code='.$e->Elem->Value['id']), type('audio/mpeg'))) )
 	 ,$wrap($e->Elem->Value['str1']) );
    })));
    
@@ -120,9 +120,9 @@ function unsetFilterButton($f,$filters)
 
 function searchBar($c, $args)
 {
-   return Form( class_('search_bar '.$c),method('GET'),action("?$args"),
-                Div( Input(class_('search_text'), type('text'), name('search'), placeholder('Mouzhart, Bitehovent, Figaroute...') ),
-                     Input(class_('search_button'), type('submit'), value(' '))
+   return Form( class_('catalog_search_bar '.$c),method('GET'),action("?$args"),
+                Div( Input(class_('catalog_search_text'), type('text'), name('search'), placeholder('Mouzhart, Bitehovent, Figaroute...') ),
+                     Input(class_('catalog_search_button'), type('submit'), value(' '))
              ));
 }
 

@@ -47,7 +47,7 @@ header nav li:first-child {
     font-size: 2em;
 }
 
-.search_bar {
+.catalog_search_bar {
     margin: 30px 0;
     text-align: center;
     width: 100%;
@@ -56,7 +56,7 @@ header nav li:first-child {
   position: absolute;
   top: 50%;*/
 }
-.search_bar > div {
+.catalog_search_bar > div {
     display: inline-block;
 
     width: 40%;
@@ -68,7 +68,7 @@ header nav li:first-child {
     background-color: rgba(0,0,0,0.7);
 }
 
-.search_bar input {
+.catalog_search_bar input {
     display: inline-block;
     border: none;
     box-sizing: border-box;
@@ -76,21 +76,56 @@ header nav li:first-child {
     font-size: inherit;
 }
 
-.search_text {
+.catalog_search_text {
     background: transparent;
     border-radius: 10px 0 0 10px;
     width: 90%;
     padding: 5px 0 5px 10px;
     /*padding-left: 10px;*/
 }
-.search_button {
+.catalog_search_button {
     width: 10%;
     background: url("res/search-icon.png") center center no-repeat;
     background-size: 1em;
     border-radius: 0 10px 10px 0;
     padding: 5px;
 }
-
+.search {
+    padding: 4px;
+    border: none;
+    border-radius: 10px 0 0 10px;
+    width: 800px;
+    font-size: 300%;
+    background-color:rgba(0,0,0,0.7);
+    color: white;
+    padding-left: 10px;
+}
+.search_button {
+    
+    padding: 3px;
+    border: none;
+    font-size: 300%;
+    width: 70px;
+    background: url("res/search-icon.png") center center no-repeat;
+    background-size: 60%;
+    border-color: black;
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 0 10px 10px 0;
+    
+}
+.big_search {
+    text-align: center;
+    width: 100%;
+    transform: translate(0,-50%);
+    position: absolute;
+    top: 50%;
+}
+.big_search > div {
+    
+    display: inline-block;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+    border-radius: 10px;
+}
 .catalog
 {
 }
@@ -181,47 +216,84 @@ h1 {
     margin: 2px 0;
 }
 
-.catalog {
-    
-    margin: auto;
-}
-
 .catalog .col {
     width: 25%;
     display: inline-block;     
     vertical-align: top;
 }
-.catalog table {
-    
-    background-color: rgba(0,0,0,0.7);
-    margin: 10px;
-    display : block;
-}
 
-.catalog table td {
-    
-    color: white;
+.catalog_ul img {
+    width: 60px;
+    border: 1px solid rgba(255,255,255,0.2);
+    position: relative;
+    top: 8px;
 }
-
-.catalog img {
-    width: 50px;
-}
-.catalog tr:first-child img {
+/*
+.col .catalog_ul li:first-child img {
     width: 150px;
 }
 
-.catalog tr:first-child {
+.catalog_li:first-child {
     font-size: 130%;
 }
+*/
 
-.catalog table a {
+
+.catalog_li {
+    display: inline-block;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.catalog_ul {
+    background-color: rgba(0,0,0,0.7);
+    display: block;
+    margin: 5px;
+    border-radius: 5px;
+    height: 110px;
+}
+
+.catalog_li a {
+    text-decoration: none;
     color: white;
 }
 
+h2, .unsetFilter {
+    text-align: center;
+    background-color: rgba(0,0,0,0.7);
+    padding: 5px;
+    display: inline-block;
+    width: 95%;
+    color: white;
+    margin: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+}
 
+.catalog_li_alone {
+    
+    display: inline-block;
+    position: relative;
+    top: 25%;
+    
+}
 
+.catalog_li_alone  a, .catalog_li_album a {
+    text-decoration: none;
+    color: white;
+}
 
+.catalog_li_album { 
 
+    display: inline-block;
+    width: 120px;
+    padding: 0;
+    vertical-align: middle;
+    position: relative;
+    top: 8px;
+}
 
-
-
+.unsetFilter {
+    
+    background-color: rgba(255,0,0,0.5);
+}
