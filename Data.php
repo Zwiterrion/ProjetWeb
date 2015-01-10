@@ -45,7 +45,7 @@ class Data {
 ";
 
    const RECORDS = "
- SELECT distinct Enregistrement.Code_Morceau as id, Album.Titre_Album as str1, '' as str2, '' as str3
+ SELECT distinct Enregistrement.Code_Morceau as id, Enregistrement.Titre as str1, '' as str2, '' as str3
  FROM Enregistrement	LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
 					LEFT JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
 					LEFT JOIN Album              on Disque.Code_Album = Album.Code_Album

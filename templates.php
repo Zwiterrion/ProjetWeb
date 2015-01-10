@@ -54,52 +54,48 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
 {
    $args = filtersUrl($filters);
 
-   $c = Div(class_('col'), H2('Compositeurs'), unsetFilterButton('composer',$filters), Table( forH($composers, function($e) use($args) {
+   $c = Div(class_('col'), H2('Compositeurs'), unsetFilterButton('composer',$filters), Ul( forH($composers, function($e) use($args) {
 
       $id = $e->Elem->Value['id'];
-      $wrap = wrp(function($e) use($id,$args) { 
-	 return Li(class_('catalog_li'),A(href("?composer=$id&$args"), $e));
-      });
-      
-      return Ul (class_('catalog_ul'), $wrap( Img(src('media.php?param=1&code='.$id)) )
-                , $wrap( $e->Elem->Value['str1'] )
-                , $wrap( $e->Elem->Value['str2'] )
-      );
+
+      $fname = $e->Elem->Value['str1'];
+      if ($fname != '')
+         $fname = concat($fname, Br());
+
+      return Li(
+         Span(class_('img'), Img(src('media.php?param=1&code='.$id)))
+         ,A(href("?composer=$id&$args")
+            ,$fname
+            ,$e->Elem->Value['str2']
+      ));
    })));
    
-   $w = Div(class_('col'), H2('Œuvres'), unsetFilterButton('work',$filters), Table( forH($works, function($e) use($args) {
+   $w = Div(class_('col'), H2('Œuvres'), unsetFilterButton('work',$filters), Ul( forH($works, function($e) use($args) {
 
       $id = $e->Elem->Value['id'];
-      $wrap = wrp(function($e) use($id,$args) { 
-	 return Li(class_('catalog_li_alone'),A(href("?work=$id&$args"), $e));
-      });
-
-      return Ul(class_('catalog_ul'),$wrap($e->Elem->Value['str1'])
-	 ,$wrap($e->Elem->Value['str2'])
-      );
+      return Li(A(href("?work=$id&$args")
+         ,$e->Elem->Value['str1'], Br()
+	 ,$e->Elem->Value['str2']
+      ));
    })));
    
-   $a = Div(class_('col'), H2('Albums'), unsetFilterButton('album',$filters), Table( forH($albums, function($e) use($args) {
+   $a = Div(class_('col'), H2('Albums'), unsetFilterButton('album',$filters), Ul( forH($albums, function($e) use($args) {
 
       $id = $e->Elem->Value['id'];
-      $wrap = wrp(function($e) use($id,$args) { 
-	 return Li(class_('catalog_li_album'),A(href("?album=$id&$args"), $e));
-      });
-
-      return Ul(class_('catalog_ul'),$wrap(Img(src('media.php?param=2&code='.$id)))
-	 ,$wrap($e->Elem->Value['str1'])
-      );
+      return Li(
+         Span(class_('img'), Img(src('media.php?param=2&code='.$id)))
+         ,A(href("?album=$id&$args"), $e->Elem->Value['str1'])
+         
+         );
    })));
    
-   $r = Div(class_('col'), H2('Morceaux'), unsetFilterButton('record',$filters), Table( forH($records, function($e) use($args) {
+   $r = Div(class_('col'), H2('Morceaux'), unsetFilterButton('record',$filters), Ul( forH($records, function($e) use($args) {
 
       $id = $e->Elem->Value['id'];
-      $wrap = wrp(function($e) use($id,$args) { 
-	 return Li(class_('catalog_li_alone'),A(href("?record=$id&$args"), $e));
-      });
-
-      return Ul( class_('catalog_ul'),$wrap( Audio(controls('controls'), Source(src('media.php?param=3&code='.$e->Elem->Value['id']), type('audio/mpeg'))) )
-	 ,$wrap($e->Elem->Value['str1']) );
+      return Li(
+         A(onclick('this.firstChild.play()'), Audio(id((string)$id), Source(src('media.php?param=3&code='.$id), type('audio/mpeg'))), 'lire')
+	 ,A(href("?record=$id&$args"), $e->Elem->Value['str1'])
+      );
    })));
    
 
