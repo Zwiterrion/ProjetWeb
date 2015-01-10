@@ -2,6 +2,7 @@
 
 namespace fxc; // pas terrible mais c'est le seul moyen...
 require_once 'fxc/xhtml5.php';
+require_once 'amazon/samples/Search/SimpleSearch.php';
 
 function page($title, $section, $body, $user)
 {
@@ -101,10 +102,15 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
       return Ul( class_('catalog_ul'),$wrap( Audio(controls('controls'), Source(src('media.php?param=3&code='.$e->Elem->Value['id']), type('audio/mpeg'))) )
 	 ,$wrap($e->Elem->Value['str1']) );
    })));
+
    
+   $amazon = search_amazon('Mozart');
 
+   $list = Ul(Li(A(href("#"),$amazon[0])),Li(Img(src($amazon[1]))),
+               Li(A(href("#"),$amazon[2])),Li(Img(src($amazon[3]))),
+                  Li(A(href("#"),$amazon[4])),Li(Img(src($amazon[5]))));
 
-   return Div(class_('catalog'), searchBar('',$args), $c, $w, $a, $r);
+   return Div(class_('catalog'), searchBar('',$args), $c, $w, $a, $r, $list);
 }
 
 function unsetFilterButton($f,$filters)
