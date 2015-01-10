@@ -36,6 +36,8 @@ $data = null;
 
 $body = fxc\catalogHtml($composers, $works, $albums, $records, $filters);
 
+
+
 echo "<!DOCTYPE html>";
 fxc\echoXml( fxc\page("e-Music", '', $body, $user));
 
