@@ -61,7 +61,7 @@ class Data {
 
    public function __construct() {
       $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique_Web", "ETD", "ETD");
-      // $this->dbh = new PDO("dblib:Server=INFO-SIMPLET;Database=Classique_Web", "ETD", "ETD");
+      //$this->dbh = new PDO("dblib:host=info-simplet;dbname=Classique_Web", "ETD", "ETD");
 
    }
 

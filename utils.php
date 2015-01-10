@@ -28,3 +28,13 @@ function reqPOST($k) {
       die;
    }
 }
+
+function filtersUrl($filters)
+{
+   $res = '';
+   foreach($filters as $k => $v)
+   {
+      $res .= "$k=$v&";
+   }
+   return substr($res,0,-1);
+}

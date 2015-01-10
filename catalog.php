@@ -8,27 +8,33 @@ require_once 'utils.php';
 
 $user = session();
 
-function addF(&$filters, $field, $arg) {
+function addF(&$filtersdb, &$filters, $field, $arg) {
    if (isset($_GET[$arg]))
-      $filters[$field] = (int) $_GET[$arg];
+   {
+      $v = (int) $_GET[$arg];
+      $filtersdb[$field] = $v;
+      $filters[$arg] = $v;
+   }
 }
 
-$filters = [];
-addF($filters, 'Musicien.Code_Musicien'     , 'composer');
-addF($filters, 'Oeuvre.Code_Oeuvre'         , 'work'    );
-addF($filters, 'Album.Code_Album'           , 'album'   );
-addF($filters, 'Enregistrement.Code_Morceau', 'record'  );
+$filters   = [];
+$filtersdb = [];
+addF($filtersdb, $filters, 'Musicien.Code_Musicien'     , 'composer');
+addF($filtersdb, $filters, 'Oeuvre.Code_Oeuvre'         , 'work'    );
+addF($filtersdb, $filters, 'Album.Code_Album'           , 'album'   );
+addF($filtersdb, $filters, 'Enregistrement.Code_Morceau', 'record'  );
+
 
 $search = optGET('search','');
 $data = new \Data();
-$composers = $data -> catalog(\Data::COMPOSERS, $search, $filters);
-$works     = $data -> catalog(\Data::WORKS    , $search, $filters);
-$albums    = $data -> catalog(\Data::ALBUMS   , $search, $filters);
-$records   = $data -> catalog(\Data::RECORDS  , $search, $filters);
+$composers = $data -> catalog(\Data::COMPOSERS, $search, $filtersdb);
+$works     = $data -> catalog(\Data::WORKS    , $search, $filtersdb);
+$albums    = $data -> catalog(\Data::ALBUMS   , $search, $filtersdb);
+$records   = $data -> catalog(\Data::RECORDS  , $search, $filtersdb);
 $data = null;
 
 
-$body = fxc\catalogHtml($composers, $works, $albums, $records);
+$body = fxc\catalogHtml($composers, $works, $albums, $records, $filters);
 
 echo "<!DOCTYPE html>";
 fxc\echoXml( fxc\page("e-Music", '', $body, $user));
