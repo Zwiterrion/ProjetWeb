@@ -55,9 +55,11 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
 {
    $args = filtersUrl($filters);
 
+
    $c = Div(class_('col'), H2('Compositeurs'), unsetFilterButton('composer',$filters), Table( forH($composers, function($e) use($args) {
 
       $id = $e->Elem->Value['id'];
+      
       $wrap = wrp(function($e) use($id,$args) { 
 	 return Li(class_('catalog_li'),A(href("?composer=$id&$args"), $e));
       });
@@ -104,11 +106,13 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
    })));
 
    
-   $amazon = search_amazon('Mozart');
+   $amazon = search_amazon('mozart');
 
-   $list = Ul(Li(A(href("#"),$amazon[0])),Li(Img(src($amazon[1]))),
-               Li(A(href("#"),$amazon[2])),Li(Img(src($amazon[3]))),
-                  Li(A(href("#"),$amazon[4])),Li(Img(src($amazon[5]))));
+   $list = div(class_('Amazon_div'),h1("Amazon"),
+         Ul(Li(class_('Amazon'),Img(src($amazon[2]))),Li(class_('Amazon'),A(href($amazon[1]),$amazon[0])),
+               Li(class_('Amazon'),Img(src($amazon[5]))),Li(class_('Amazon'),A(href($amazon[4]),$amazon[3])),
+                  Li(class_('Amazon'),Img(src($amazon[8]))),Li(class_('Amazon'),A(href($amazon[7]),$amazon[6]))));
+
 
    return Div(class_('catalog'), searchBar('',$args), $c, $w, $a, $r, $list);
 }

@@ -61,8 +61,6 @@ class Data {
 
    public function __construct() {
       $this->dbh = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique_Web", "ETD", "ETD");
-      //$this->dbh = new PDO("dblib:host=info-simplet;dbname=Classique_Web", "ETD", "ETD");
-
    }
 
    public function delete($id, $codeAbonne) {
@@ -104,9 +102,10 @@ class Data {
 
    public function checkIntoBase($login,$pass) {
 
-      $stmt = $this->dbh->prepare('SELECT * FROM Abonné WHERE Login = :pseudo AND Password = :pass');
+      $connexion = new PDO("sqlsrv:Server=INFO-SIMPLET;Database=Classique_Web", "ETD", "ETD");
+      $stmt = $connexion->prepare('SELECT * FROM Abonné WHERE Login = :pseudo AND Password = :pass');
       $stmt->execute(array(':pseudo' => $login, 
-			   ':pass' => $pass));
+			                      ':pass' => $pass));
       $result = $stmt->rowCount();
 
       if($result == 0) 
