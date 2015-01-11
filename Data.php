@@ -192,7 +192,7 @@ class Data {
       $res = new SortedList();
 
       if (count($filters) == 0)
-         $res->Max = 20;
+         $res->Max = 15;
 
       if ($search != '')
 	 while ($row = $q->fetch())

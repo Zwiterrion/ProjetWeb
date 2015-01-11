@@ -139,10 +139,9 @@ function ctrlBar($filters, $cart, $user)
    });
 
    return Div( class_('ctrlBar'),
-               $filtersH,
                H1(A(href('index.php'), 'symphonaute')),
                
-               Form(method('GET'),action(''),
+               Form(method('GET'),action(''), $filtersH,
                     Input(class_('searchText'), type('text'), name('search'), value($value), placeholder('mouzhart · bytehôvent · boulérot') ),
                     Input(class_('searchButton'), type('submit'), value(' ')) ),
                
