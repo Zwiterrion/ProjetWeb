@@ -180,7 +180,7 @@ function registerForm($error) {
 
 function about() {
    return Div( H2("Introduction"),
-    	       P("Symphonaute a été réalisé par Timothée Jourde et Etienne Anne, dans le cadre du projet web de S3 à l'IUT Informatique de Bordeaux. Il est écrit en PHP, HTML, CSS et utilise une base de données (sous SQLServer) répertoriant compositeurs, œuvres, albums et morceaux. Tout est fait maison, from scratch, excepté l'API Amazon."),
+    	       P("Symphonaute a été réalisé par Timothée Jourde et Etienne Anne, dans le cadre du projet web de S3 à l'IUT Informatique de Bordeaux. Il est écrit en PHP, HTML, CSS et utilise une base de données (sous SQLServer) répertoriant compositeurs, œuvres, albums et morceaux. Tout est fait maison, from scratch, excepté l'API Amazon. Merci d'utiliser Firefox pour profiter au maximum de l'interface."),
 
     	       H2("Fonctionnement"),
     	       P("Pour commencer, l'utilisateur est invité à faire une recherche depuis la page d'accueil, il peut saisir le nom approximatif d'un compositeur, d'une œuvre, d'un album..."),
