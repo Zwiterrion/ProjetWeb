@@ -158,7 +158,7 @@ class KeyValue
 
 class SortedList extends DoublyLinkedList
 {
-   public $Max = -1;
+   public $Max = 200;
 
    public function addSorted($k, $v)
    {

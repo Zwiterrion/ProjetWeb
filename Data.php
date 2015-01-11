@@ -193,8 +193,6 @@ class Data {
 
       if (count($filters) == 0)
          $res->Max = 20;
-      else
-         $res->Max = -1;
 
       if ($search != '')
 	 while ($row = $q->fetch())
@@ -207,7 +205,7 @@ class Data {
 	    $res -> addSorted($score, $row);
 	 }
       else
-	 while ($row = $q->fetch())
+	 while (($row = $q->fetch()) && $res->count() <= $res->Max)
 	    $res -> push(new KeyValue(-1, $row));
       
       $q -> closeCursor();
