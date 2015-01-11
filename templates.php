@@ -11,7 +11,7 @@ function page($title, $bodyclass, $body)
    return Html(lang('fr'),
                
                Head( Meta(charset('UTF-8')),
-		     Link(rel('stylesheet'),href('all.css'), type('text/css')),
+		     Link(rel('stylesheet'),href('all.pre.css'), type('text/css')),
                      Script(type("text/javascript"), src("all.js"), async('async')),
 		     Title('symphonaute'.$title)
 	       ),

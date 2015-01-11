@@ -60,8 +60,12 @@ else
 
    $catalog = \fxc\catalogHtml($composers, $works, $albums, $records, $filters, $user != []);
 
-   $as = ($composers->count() > 0) ? $composers->First->Elem->Value['str2'] : 'symphonique';
-   $amazon = fxc\amazonHtml( search_amazon($as) );
+   $amazon = '';
+   if (count($filtersdb) > 0)
+   {
+      $as = ($composers->count() > 0) ? $composers->First->Elem->Value['str2'] : 'symphonique';
+      $amazon = fxc\amazonHtml( search_amazon($as) );
+   }
 
    $body = fxc\concat($catalog, $amazon);
 }
