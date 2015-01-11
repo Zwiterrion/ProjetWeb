@@ -430,7 +430,7 @@ a
             align-items: center;
     margin: 0 0 3px 0;
     height: 4em;
-    /*overflow: hidden;*/
+    overflow: hidden;
     -webkit-box-shadow: 0 -10px 7px -7px rgba(0,0,0,0.6);
        -moz-box-shadow: 0 -10px 7px -7px rgba(0,0,0,0.6);
             box-shadow: 0 -10px 7px -7px rgba(0,0,0,0.6);
@@ -448,6 +448,7 @@ a
     padding: 7px;
     text-overflow: ellipsis;
     overflow: hidden;
+    align-self: flex-start;
 }
 
 .catalog li .play {
