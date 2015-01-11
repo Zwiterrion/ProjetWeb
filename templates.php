@@ -124,7 +124,7 @@ function ctrlBar($filters, $cart, $user)
 {
    $mLogin;
    if(isset($user['login'])) {
-      $mLogin = A(class_('log'),href('logout.php'), 'deconnexion (' . $user['login'] . ')' );
+      $mLogin = A(class_('log'),href('logout.php'), 'déconnexion (' . $user['login'] . ')' );
    }
    else {
       $mLogin = A(class_('log'),href('login.php'), 'connexion');
@@ -132,7 +132,7 @@ function ctrlBar($filters, $cart, $user)
 
 
    $value = (isset($filters['search'])) ? $filters['search'] : '';
-   $cart  = ($cart) ? A(class_('cart btn'), href('?cart'), 'voir le panier · ') : '';
+   $cart  = ($cart) ? A(class_('cart'), href('?cart'), 'voir le panier · ') : '';
 
    $filtersH = forH($filters, function($k, $v) {
       return ($k!='search') ? Input(type('hidden'), name($k), value($v)) : '';
@@ -148,7 +148,7 @@ function ctrlBar($filters, $cart, $user)
                
                unsetFilterButton('search', $filters),
                Span(class_('stretch'), ''),
-               $cart, $mLogin, ' · ', A(class_('about'), href('about.php'), 'à propos')
+               Span( $cart, $mLogin, ' · ', A(class_('about'), href('about.php'), 'à propos') )
    );
 }
 

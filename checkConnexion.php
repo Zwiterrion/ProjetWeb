@@ -32,7 +32,7 @@
     		$_SESSION['PASSWORD'] = $_POST['password'];
             $_SESSION['Code_Abonne'] = $accessBase->checkIntoBase($login,$password);
 
-    		 header('Location: catalog.php');
+    		 header('Location: index.php');
              exit(); 
     	}
     	else 

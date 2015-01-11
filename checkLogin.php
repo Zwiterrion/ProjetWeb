@@ -25,7 +25,7 @@ if($_POST['password'] != '' && $_POST['pseudo'] != '') {
       $_SESSION['PASSWORD'] = $password;
       $_SESSION['Code_Abonne'] = $result;
 
-      header('Location: catalog.php');
+      header('Location: index.php');
       exit(); 
    }
 }

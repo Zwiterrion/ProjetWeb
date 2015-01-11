@@ -10,9 +10,10 @@ body {
     margin: 0;
     padding: 0;
     
-    background: url("res/background.png") no-repeat center center fixed;
+    background-image: url("res/bg.jpg");
+    background-repeat: no-repeat;
     background-size: cover;
-    font-family: "DejaVu Sans Light","DejaVu Sans",Verdana,"Bitstream Vera Sans",Geneva,sans-serif;
+    background-position: center;
 
     display: flex;
     flex-direction: column;
@@ -20,6 +21,9 @@ body {
     height: 100%;
     min-height: 100%;
     width: 100%;
+}
+body, input {
+    font-family: "DejaVu Sans Light","DejaVu Sans",Verdana,"Bitstream Vera Sans",Geneva,sans-serif;
 }
 
 
@@ -64,12 +68,12 @@ header nav li:first-child {
 {
     display: inline-block;
     background-color: rgba(255,255,255,0.8);
-    padding: 1px 3px;
+    padding: 1px 5px;
     color: rgb(50,50,50);
     border-radius: 4px;
     text-decoration: none;
 }
-.ctrlBar a
+a
 {
     color: inherit;
     text-decoration: none;
@@ -78,19 +82,16 @@ header nav li:first-child {
 {
     color: rgba(255,255,255,0.9);
     font-weight: bold;
-    font-size: 110%;
+    font-size: 120%;
     text-shadow: 0 5px 15px black;
     margin: 0 10px;
 }
 
-.welcome .ctrlBar h1
-{
-    font-size: 300%;
-}
 
 
 .ctrlBar, .catalog .col > div {
     position: relative;
+    z-index: 2;
     background-color: rgba(255,255,255,0.6);
    /*box-shadow: 0 0 20px rgba(0,0,0,0.6);*/
 }
@@ -98,7 +99,7 @@ header nav li:first-child {
 .ctrlBar {
     display: flex;
     align-items: center;
-    margin: 0 0 4px 0;
+    margin: 0 0 3px 0;
     padding: 5px;
     color: rgb(50,50,50);
  }
@@ -109,17 +110,35 @@ header nav li:first-child {
 }
 
 .welcome .ctrlBar {
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
     text-align: center;
-    width: 100%;
-    font-size: 120%;
+    font-size: 130%;
+    background-color: transparent;
 /*transform: translate(0,-50%);
   position: absolute;
   top: 50%;*/
 }
 
-.ctrlBar > form {
-    display: inline-block;
+.welcome .ctrlBar > form {
+    width: 50%;
+    max-width: 900px;
+    margin: 15px;
+    font-size: 140%;
+}
 
+.welcome .ctrlBar h1
+{
+    font-size: 180%;
+    color: rgba(255,255,255,0.9);
+}
+.welcome .ctrlBar .stretch {
+    flex: 0;
+}
+
+
+.ctrlBar > form {
     width: 40%;
     max-width: 400px;
 
@@ -146,19 +165,18 @@ header nav li:first-child {
 }
 .searchButton {
     width: 10%;
-    background: url("res/search-icon.png") center center no-repeat;
-    background-size: 1em;
+
+    background-image: url("res/search.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    background-color: rgba(0,0,0,0);
+    
     border-radius: 0 10px 10px 0;
     padding: 5px;
 }
 
-.welcome .ctrlBar {
-    font-size: 200%;
-}
-.welcome .ctrlBar > form {
-    width: 50%;
-    max-width: 700px;
-}
 
 
 /*.search {
@@ -290,14 +308,14 @@ header nav li:first-child {
     height: 100%;
     min-height: 0px;
     vertical-align: top;
-    margin-right: 4px;
+    margin-right: 3px;
 }
 .catalog .col:first-child {
-    margin-left: 4px;
+    margin-left: 3px;
 }
 .catalog .col > div {
     padding: 5px;
-    box-shadow: 0 20px 15px -15px black;
+    box-shadow: 0 15px 15px -15px black;
 }
 
 
@@ -307,7 +325,9 @@ header nav li:first-child {
 .catalog .img {
     height: 4em;
     width:  4em;
-    border-radius: 5px 0 0 5px;
+
+    position: relative;
+    z-index: 0;
     
     background-repeat: no-repeat;
     background-size: cover;
@@ -322,35 +342,25 @@ header nav li:first-child {
     overflow-y: auto;
 }
 .catalog li {
-    background-color: rgba(0,0,0,0.9);
+    color: rgb(240,240,240);
+    background-color: rgba(30,30,30,0.8);
     display: flex;
-    margin: 0 0 4px 0;
-    /*border-radius: 5px;*/
+    margin: 0 0 3px 0;
     height: 4em;
-    overflow: hidden;
-    box-shadow: 0 3px 5px rgba(0,0,0,0.7);
-}
-
-.catalog li:first-child {
-    height: 5em;
-    font-size: 130%;
-}
-.catalog li:first-child .img {
-    height: 5em;
-    width: 5em;
+    /*overflow: hidden;*/
+    box-shadow: 0 -10px 7px -7px rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 0;
 }
 
 
 .catalog li > :last-child {
     flex: 1;
-    padding: 5px;
+    padding: 7px;
     text-overflow: ellipsis;
+    overflow: hidden;
 }
 
-.catalog li a {
-    text-decoration: none;
-    color: white;
-}
 
 .catalog h2 {
     display: inline-block;
@@ -360,12 +370,9 @@ header nav li:first-child {
 }
 
 .unsetFilter, .ctrlBar .unsetFilter {
-    background-color: rgba(255,0,0,0.7);
+    background-color: rgba(255,0,0,0.6);
     color: white;
     /*border: 1px solid white;*/
-}
-.cart {
-    background-color: rgba(220,220,255,0.8);
 }
 
 .stretch {
