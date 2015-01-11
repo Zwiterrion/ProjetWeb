@@ -32,7 +32,7 @@ function forH($es, $f)
    return $res;
 }
 
-function catalogHtml($composers, $works, $albums, $records, $filters)
+function catalogHtml($composers, $works, $albums, $records, $filters, $cart)
 {
    $args = filtersUrl($filters);
 
@@ -76,11 +76,11 @@ function catalogHtml($composers, $works, $albums, $records, $filters)
    
    $r = Div(class_('col'),
             Div(H2('Morceaux'), unsetFilterButton('record',$filters)),
-            Ul( forH($records, function($k,$e) use($args) {
+            Ul( forH($records, function($k,$e) use($args,$cart) {
       
       $id = $e->Elem->Value['id'];
       return Li( A(onclick('this.firstChild.play()'), Audio(id((string)$id), Source(src('media.php?param=3&code='.$id), type('audio/mpeg'))), 'lire'),
-                 cartButton($id, isset($e->Elem->Value['cart'])),
+                 ($cart) ? cartButton($id, isset($e->Elem->Value['cart'])) : '',
 	         A(href("?record=$id&$args"), $e->Elem->Value['str1']) );
    })));
 

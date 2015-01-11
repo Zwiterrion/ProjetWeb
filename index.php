@@ -56,7 +56,7 @@ else
    $records   = $data -> catalog(\Data::RECORDS  , $search, $filtersdb);
    $data = null;
 
-   $catalog = \fxc\catalogHtml($composers, $works, $albums, $records, $filters);
+   $catalog = \fxc\catalogHtml($composers, $works, $albums, $records, $filters, $user != []);
 
    // $as = ($search != '') ? $search : 'musique symphonique';
    // $amazon = fxc\amazonHtml( search_amazon($as) );
