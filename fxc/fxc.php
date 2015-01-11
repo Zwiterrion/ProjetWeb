@@ -1,5 +1,9 @@
 <?php
 
+/*
+   EDSL permettant de construire des documents Xml en php pur. Fait maison.
+*/
+
 namespace fxc;
 
 const PARENT_EMPTY     = 0;

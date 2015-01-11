@@ -14,6 +14,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 
     display: flex;
     flex-direction: column;
@@ -90,10 +91,7 @@ a
 
 
 .ctrlBar, .catalog .col > div {
-    position: relative;
-    z-index: 2;
     background-color: rgba(255,255,255,0.6);
-   /*box-shadow: 0 0 20px rgba(0,0,0,0.6);*/
 }
 
 .ctrlBar {
@@ -306,6 +304,9 @@ a
     margin-left: 3px;
 }
 .catalog .col > div {
+    position: relative;
+    z-index: 2;
+
     padding: 5px;
     box-shadow: 0 15px 15px -15px black;
 }
@@ -452,16 +453,45 @@ body.form > form h1 {
 
 
 .error {
-    
-    color: white;
-    font-size: 1.3em;
-    background-color: rgba(255,0,0,0.6); 
-    padding: 5px 0;
-    margin: 2px 0;
+    color: rgb(150,0,0);
+    border: 1px solid rgb(150,0,0);
+    text-shadow: 0 3px 10px black;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 2px 5px;
 }
 
 
+.amazon {
+    display: flex;
+    align-items: center;
 
+    font-size: 75%;
+    color: black;
+    background-color: rgba(255,255,255,0.4);
+}
+.amazon > * {
+    margin: 0 15px;
+}
+
+.amazon a {
+    display: flex;
+    max-width: 22%;
+}
+.amazon a > img {
+    height: 3em;
+}
+.amazon a > span {
+    padding: 5px;
+}
+
+.amazon h4 {
+    color: rgba(0,0,0,0.5);
+    font-size: 150%;
+    font-weight: normal;
+}
+
+/*
 .Amazon a{
     
     text-decoration: none;
@@ -485,20 +515,28 @@ body.form > form h1 {
     padding: 10px;;
     background-color: rgba(0,0,0,0.7);
 }
+*/
 
-
-
-.commantaire li {
-    
-    text-align: center;
-    background-color: rgba(0,0,0,0.9);
-    color: rgba(240,240,240,1);
-    display: inline-block;
-    width: 100%;
-    padding: 5px;
-    font-family: Arial;
+.about > div {
+    background-color: rgba(255,255,255,0.5);
+    box-shadow: 0 5px 50px rgba(0,0,0,0.5);
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 700px;
 }
-
+.about h2 {
+    margin: 35px auto 0 auto;
+    text-shadow: 0 5px 20px rgba(0,0,0,0.7);
+    max-width: 700px;
+    color: rgba(255,255,255,0.7);
+    font-size: 210%;
+}
+.about h2:first-child {
+    margin-top: 0;
+}
+.about p {
+    text-align: justify;
+}
 
 
 

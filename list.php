@@ -1,5 +1,8 @@
 <?php
 
+/*
+   Implémentation d'une liste chaînée, fait maison.
+*/
 
 class Elem
 {

@@ -1,8 +1,12 @@
 <?php
 
+/* 
+   Recherche en texte libre fait maison.
+*/
+
 // retourne correspondance de la chaîne b avec la chaîne de référence a (0 à 1)
-// méthode un peu merdique très tolérante, marche mal sur des grandes chaînes avec plusieurs mots
-// améliorations simple: ordre; nb occurence max dans filter
+// méthode très (trop) tolérante, marche mal sur des grandes chaînes avec plusieurs mots
+// améliorations simples possibles: ordre; nb occurence max dans filter...
 function fit($a, $b)
 {
   $a = iconv("UTF-8", "ASCII//TRANSLIT//IGNORE", $a);

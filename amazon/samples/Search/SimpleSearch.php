@@ -41,7 +41,7 @@ function search_amazon($value) {
 
   $search = new Search();
   $search->setCategory('Music');
-  $search->setKeywords($value);
+  $search->setKeywords(explode(' ',$value)[0]);
   $search->setPage(3);
   $search->setResponseGroup(array('Large', 'Small'));
 

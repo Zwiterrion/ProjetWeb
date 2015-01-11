@@ -11,7 +11,7 @@ function page($title, $bodyclass, $body)
    return Html(lang('fr'),
                
                Head( Meta(charset('UTF-8')),
-		     Link(rel('stylesheet'),href('index.css'), type('text/css')),
+		     Link(rel('stylesheet'),href('all.css'), type('text/css')),
                      Script(type("text/javascript"), src("all.js"), async('async')),
 		     Title('symphonaute'.$title)
 	       ),
@@ -90,10 +90,10 @@ function catalogHtml($composers, $works, $albums, $records, $filters, $cart)
 
 function amazonHtml($a)
 {
-   return Div(class_('Amazon_div'),h1("Amazon"),
-              Ul(Li(class_('Amazon'),Img(src($a[2]))),Li(class_('Amazon'),A(href($a[1]),$a[0])),
-                 Li(class_('Amazon'),Img(src($a[5]))),Li(class_('Amazon'),A(href($a[4]),$a[3])),
-                 Li(class_('Amazon'),Img(src($a[8]))),Li(class_('Amazon'),A(href($a[7]),$a[6]))));
+   return Div(class_('amazon'),h4("à voir sur amazon"),
+              A(href($a[1]), Img(src($a[2])), Span($a[0])),
+              A(href($a[4]), Img(src($a[5])), Span($a[3])),
+              A(href($a[7]), Img(src($a[8])), Span($a[6])) );
    
 }
 
@@ -156,6 +156,7 @@ function loginForm($bad)
 {
    return form( action('checkLogin.php'),method('POST'),
                 h1('connexion'),
+                ($bad) ? Strong(class_('error'), 'nom ou mot de passe incorrect') : '',
                 //A(class_('pas_inscrit'),href('inscrption.php'), 'Pas encore inscrit ?'),
                 input(name('pseudo'),type('text'),placeholder('nom utilisateur')),
                 input(name('password'),type('password'),placeholder('mot de passe')),
@@ -167,11 +168,32 @@ function loginForm($bad)
 function registerForm($error) {
    return form( action('checkConnexion.php'),method('POST'),
                 h1('inscription'),
-                ($error != '') ? p(class_('error'), $error) : '',
+                ($error != '') ? Strong(class_('error'), $error) : '',
                 input(name('email')         , type('text')    , placeholder('nom')),
                 input(name('pseudo')        , type('text')    , placeholder('login < 10 caractères')),
                 input(name('password')      , type('password'), placeholder('mot de passe')),
                 input(name('password_verif'), type('password'), placeholder('retapez le mot de passe')),
 
-                input(type('submit'), value("connexion")) );
+                input(type('submit'), value("inscription")) );
+}
+
+
+function about() {
+   return Div( H2("Introduction"),
+    	       P("Symphonaute a été réalisé par Timothée Jourde et Etienne Anne, dans le cadre du projet web de S3 à l'IUT Informatique de Bordeaux. Il est écrit en PHP, HTML, CSS et utilise une base de données (sous SQLServer) répertoriant compositeurs, œuvres, albums et morceaux. Tout est fait maison, from scratch, excepté l'API Amazon."),
+
+    	       H2("Fonctionnement"),
+    	       P("Pour commencer, l'utilisateur est invité à faire une recherche depuis la page d'accueil, il peut saisir le nom approximatif d'un compositeur, d'une œuvre, d'un album..."),
+    	       P("Les résultas sont dispersés en 4 catégories. On peut ensuite filtrer les résultats en séléctionnant un compositeur, une œuvre, un album, ou un morceaux."),
+               P("Un clic dans la colonne compositeurs par exemple, disons Mozart, permet d'afficher ses oeuvres, albums et enregistrements dans les autres colonnes ; Mozart sera alors le seul compositeur dans la colonne compositeurs. On peut également cumuler plusieurs critères (compositeur + album, Œuvre + recherche, etc.)."),
+               P("Notons que l'on peut écouter des éxtraits des morceaux en cliquant sur le haut-parleur."),
+
+	       H2("Panier"),
+               P("L'utilisateur peut créer un compte pour constituer un panier : une fois connecté, il suffit de cocher la case du morceaux à ajouter. On peut ensuite afficher le panier."),
+
+    	       H2("Fonction de recherche"),
+    	       P("Le site dispose d'une fonction de recherche en texte libre, avec donc une bonne tolérance aux erreurs de syntaxes. La recherche est en contre partie un peu longue"),
+
+    	       H2("Amazon"),
+    	       P("Des albums disponibles sur Amazon correspondants au compositeur séléctionné sont également proposés.") );
 }
