@@ -190,7 +190,7 @@ class Data {
       $q->execute(array_values($filters));
       
       $res = new SortedList();
-      $res->Max = 10;
+      $res->Max = 20;
 
       if ($search != '')
 	 while ($row = $q->fetch())
@@ -203,7 +203,7 @@ class Data {
 	    $res -> addSorted($score, $row);
 	 }
       else
-	 while (($row = $q->fetch()) && $res->count() < 10)
+	 while ($row = $q->fetch())
 	    $res -> push(new KeyValue(-1, $row));
       
       $q -> closeCursor();

@@ -143,7 +143,7 @@ function ctrlBar($filters, $cart, $user)
                H1(A(href('index.php'), 'symphonaute')),
                
                Form(method('GET'),action(''),
-                    Input(class_('searchText'), type('text'), name('search'), value($value), placeholder('mouzhart · bitehôvent · boulérot') ),
+                    Input(class_('searchText'), type('text'), name('search'), value($value), placeholder('mouzhart · bytehôvent · boulérot') ),
                     Input(class_('searchButton'), type('submit'), value(' ')) ),
                
                unsetFilterButton('search', $filters),
