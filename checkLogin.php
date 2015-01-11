@@ -16,14 +16,14 @@ if($_POST['password'] != '' && $_POST['pseudo'] != '') {
    $result = $accessBase->checkIntoBase($login, $password);
 
    if($result === false) {
-      header('Location: login.php');
+      header('Location: login.php?bad');
       exit();    
    }
    else {
 
       $_SESSION['NAME_USER'] = $login;
       $_SESSION['PASSWORD'] = $password;
-      $_SESSION['Code_Abonne'] = $result;
+      $_SESSION['Code_Abonne'] = (int) $result;
 
       header('Location: index.php');
       exit(); 

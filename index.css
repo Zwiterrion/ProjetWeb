@@ -130,7 +130,8 @@ a
 
 .welcome .ctrlBar h1
 {
-    font-size: 180%;
+    font-weight: normal;
+    font-size: 300%;
     color: rgba(255,255,255,0.9);
 }
 .welcome .ctrlBar .stretch {
@@ -223,7 +224,7 @@ a
     flex: 1;
 }
 
-.inscription {
+/*.inscription {
     text-align: center;
     width: 100%;
     transform: translate(0,-50%);
@@ -274,7 +275,7 @@ a
     font-size: 200%;
     text-transform: uppercase;
     background-color:rgba(0,0,0,0.7);
-}
+}*/
 
 
 /*.log {
@@ -291,15 +292,6 @@ a
     height: 100%;
 
 }*/
-
-.error {
-    
-    color: white;
-    font-size: 1.3em;
-    background-color: rgba(255,0,0,0.6); 
-    padding: 5px 0;
-    margin: 2px 0;
-}
 
 .catalog .col {
     display: flex;
@@ -345,6 +337,7 @@ a
     color: rgb(240,240,240);
     background-color: rgba(30,30,30,0.8);
     display: flex;
+    align-items: center;
     margin: 0 0 3px 0;
     height: 4em;
     /*overflow: hidden;*/
@@ -361,6 +354,16 @@ a
     overflow: hidden;
 }
 
+.catalog li .play {
+    background-image: url("res/listen.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    width: 2em;
+    margin: 10px;
+    height: 100%;
+}
 
 .catalog h2 {
     display: inline-block;
@@ -409,6 +412,54 @@ a
     top: 8px;
 }
 */
+
+
+body.form > form {
+    position: absolute;
+    top:  50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    /*color: white;*/
+    text-align: center;
+}
+body.form > form input[type="text"], body.form > form input[type="password"] {
+    display: block;
+    font-size: 140%;
+    border: none;
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 10px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+
+    margin: 7px;
+    padding: 3px 10px;
+}
+body.form > form input[type="submit"], body.form > form a {
+    display: inline-block;
+    border: none;
+    background-color: rgba(0,0,0,0.7);
+    color: rgb(230,230,230);
+    border-radius: 10px;
+    margin: 5px;
+    padding: 2px 7px;
+    font-size: 110%;
+}
+body.form > form h1 {
+    font-weight: normal;
+    text-shadow: 0 3px 11px black; 
+    color: rgba(255,255,255, 0.8);
+    margin: 0;
+}
+
+
+.error {
+    
+    color: white;
+    font-size: 1.3em;
+    background-color: rgba(255,0,0,0.6); 
+    padding: 5px 0;
+    margin: 2px 0;
+}
+
 
 
 .Amazon a{

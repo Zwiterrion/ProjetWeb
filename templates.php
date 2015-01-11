@@ -7,9 +7,9 @@ function page($title, $bodyclass, $body)
 {
    $title = ($title != '') ? ' · '.$title : '';
 
-        
+   
    return Html(lang('fr'),
-                    
+               
                Head( Meta(charset('UTF-8')),
 		     Link(rel('stylesheet'),href('index.css'), type('text/css')),
                      Script(type("text/javascript"), src("all.js"), async('async')),
@@ -19,8 +19,8 @@ function page($title, $bodyclass, $body)
 	       Body(class_($bodyclass), $body)
    );
 }
-    
-    
+
+
 
 function forH($es, $f)
 {
@@ -51,7 +51,7 @@ function catalogHtml($composers, $works, $albums, $records, $filters, $cart)
             $fname,
             $e->Elem->Value['str2']
          ));
-   })));
+            })));
    
    $w = Div(class_('col'),
             Div(H2('Œuvres'), unsetFilterButton('work',$filters)),
@@ -72,17 +72,17 @@ function catalogHtml($composers, $works, $albums, $records, $filters, $cart)
       return Li( Span(class_('img'), style_("background-image: url(\"media.php?param=2&code=$id\");")),
                  A(href("?album=$id&$args"), $e->Elem->Value['str1']) );
       
-   })));
+            })));
    
    $r = Div(class_('col'),
             Div(H2('Morceaux'), unsetFilterButton('record',$filters)),
             Ul( forH($records, function($k,$e) use($args,$cart) {
       
       $id = $e->Elem->Value['id'];
-      return Li( A(onclick('this.firstChild.play()'), Audio(id((string)$id), Source(src('media.php?param=3&code='.$id), type('audio/mpeg'))), 'lire'),
-                 ($cart) ? cartButton($id, isset($e->Elem->Value['cart'])) : '',
+      return Li( A(class_('play'), onclick('this.firstChild.play()'), Audio(id((string)$id), Source(src('media.php?param=3&code='.$id), type('audio/mpeg')))),
+                 ($cart) ? cartButton($id, isset($e->Elem->Value['cartId'])) : '',
 	         A(href("?record=$id&$args"), $e->Elem->Value['str1']) );
-   })));
+            })));
 
    
    return Div(class_('catalog'), $c, $w, $a, $r);
@@ -151,3 +151,27 @@ function ctrlBar($filters, $cart, $user)
    );
 }
 
+
+function loginForm($bad) 
+{
+   return form( action('checkLogin.php'),method('POST'),
+                h1('connexion'),
+                //A(class_('pas_inscrit'),href('inscrption.php'), 'Pas encore inscrit ?'),
+                input(name('pseudo'),type('text'),placeholder('nom utilisateur')),
+                input(name('password'),type('password'),placeholder('mot de passe')),
+                input(type('submit'),value("connexion")),
+                A(href('inscription.php'), 'inscription') );
+}
+
+
+function registerForm($error) {
+   return form( action('checkConnexion.php'),method('POST'),
+                h1('inscription'),
+                ($error != '') ? p(class_('error'), $error) : '',
+                input(name('email')         , type('text')    , placeholder('nom')),
+                input(name('pseudo')        , type('text')    , placeholder('login < 10 caractères')),
+                input(name('password')      , type('password'), placeholder('mot de passe')),
+                input(name('password_verif'), type('password'), placeholder('retapez le mot de passe')),
+
+                input(type('submit'), value("connexion")) );
+}

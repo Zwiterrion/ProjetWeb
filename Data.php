@@ -54,8 +54,25 @@ class Data {
 
 ";
 
-   const RECORDS = "
- SELECT distinct Enregistrement.Code_Morceau as id, Abonné.Code_Abonné as cart, Enregistrement.Titre as str1, '' as str2, '' as str3
+   public static function RECORDS($userId) {
+      $sub    = '';
+      $select = '';
+
+      if ($userId != false)
+      {
+         $userId = (int) $userId;
+         $select = ", cart.cartId";
+         $sub    = "
+      LEFT JOIN ( SELECT Achat.Code_Enregistrement as cartId
+                  FROM Achat INNER JOIN Abonné ON Abonné.Code_Abonné = Achat.Code_Abonné
+                  WHERE Abonné.Code_Abonné = $userId ) as cart
+           ON Enregistrement.Code_Morceau = cart.cartId
+";
+      }
+      
+
+      return "
+ SELECT distinct Enregistrement.Code_Morceau as id, Enregistrement.Titre as str1, '' as str2, '' as str3 $select
  FROM Enregistrement                    LEFT JOIN Composition_Disque on Enregistrement.Code_Morceau = Composition_Disque.Code_Morceau
 					LEFT JOIN Disque             on Composition_Disque.Code_Disque = Disque.Code_Disque
 					LEFT JOIN Album              on Disque.Code_Album = Album.Code_Album
@@ -68,7 +85,8 @@ class Data {
 
                                         LEFT JOIN Achat  on Enregistrement.Code_Morceau = Achat.Code_Enregistrement
                                         LEFT JOIN Abonné on Achat.Code_Abonné = Abonné.Code_Abonné
-";
+                                        $sub
+";}
   
    var $dbh;
 
@@ -82,7 +100,6 @@ class Data {
       $stmt = $this->dbh->prepare("DELETE FROM Achat WHERE Code_Enregistrement = ? AND Code_Abonné = ? ");
       $stmt->execute([$id,$codeAbonne]);
       $stmt->closeCursor();
-
    }
 
    public function add($id, $codeAbonne) {
@@ -91,7 +108,6 @@ class Data {
       $stmt->execute([$id,$codeAbonne]);
       //echo "\n($id, $codeAbonne)\n";
       $stmt->closeCursor();
-      die;
    }
 
    public function insertIntoBase($login, $pass, $nom) {
@@ -101,12 +117,13 @@ class Data {
       $stmt->execute();
 
       $requeteCount = $stmt->rowCount();
+      $stmt -> closeCursor();
         
       if($requeteCount == 0){
 
 	 $stmt = $this->dbh->prepare("INSERT INTO Abonné(Nom_Abonné,Login,Password) VALUES (?,?,?)");
 	 $stmt->execute([$nom,$login,$pass]);
-	 $this->dbh = null;      
+         $stmt->closeCursor();
 
 	 return true;   
       }
@@ -114,22 +131,26 @@ class Data {
       {
 	 return false;
       }
+
    }
 
    public function checkIntoBase($login,$pass) {
 
       $stmt = $this->dbh->prepare('SELECT * FROM Abonné WHERE Login = :pseudo AND Password = :pass');
       $stmt->execute(array(':pseudo' => $login, 
-			                      ':pass' => $pass));
+			   ':pass' => $pass));
+
       $result = $stmt->rowCount();
 
       if($result == 0) 
       {
+         $stmt->closeCursor();
 	 return false;
       }
       else  
       {
 	 $row = $stmt->fetch();
+         $stmt->closeCursor();
 	 return $row[0];
       }
    }
@@ -144,6 +165,8 @@ class Data {
       $image = pack("H*", $lob);
       header("Content-Type: image/jpeg");
       echo $image;
+      $stmt->closeCursor();
+      $stmt = null;
    }
    public function echoImageAlbum($code) {
 
@@ -155,6 +178,8 @@ class Data {
       $image = pack("H*", $lob);
       header("Content-Type: image/jpeg");
       echo $image;
+      $stmt->closeCursor();
+      $stmt = null;
    }
    public function echoRecord($code) {
 
@@ -166,6 +191,8 @@ class Data {
       $image = pack("H*", $lob);
       header("Content-Type: audio/mpeg");
       echo $image;
+      $stmt->closeCursor();
+      $stmt = null;
    }
 
    public function catalog($query, $search, $filters)
@@ -193,6 +220,8 @@ class Data {
 
       if (count($filters) == 0)
          $res->Max = 15;
+      else
+         $res->Max = 50;
 
       if ($search != '')
 	 while ($row = $q->fetch())
@@ -208,7 +237,7 @@ class Data {
 	 while (($row = $q->fetch()) && $res->count() <= $res->Max)
 	    $res -> push(new KeyValue(-1, $row));
       
-      $q -> closeCursor();
+      $q->closeCursor();
       return $res;
    }
 }

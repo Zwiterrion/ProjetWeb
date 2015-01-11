@@ -49,11 +49,13 @@ if ($filters == [] && ! isset($_GET['cart']))
 }
 else
 {
+   $userId = (isset($_SESSION['Code_Abonne'])) ? (int) $_SESSION['Code_Abonne'] : false;
+
    $data = new \Data();
-   $composers = $data -> catalog(\Data::COMPOSERS, $search, $filtersdb);
-   $works     = $data -> catalog(\Data::WORKS    , $search, $filtersdb);
-   $albums    = $data -> catalog(\Data::ALBUMS   , $search, $filtersdb);
-   $records   = $data -> catalog(\Data::RECORDS  , $search, $filtersdb);
+   $composers = $data -> catalog(\Data::COMPOSERS       , $search, $filtersdb);
+   $works     = $data -> catalog(\Data::WORKS           , $search, $filtersdb);
+   $albums    = $data -> catalog(\Data::ALBUMS          , $search, $filtersdb);
+   $records   = $data -> catalog(\Data::RECORDS($userId), $search, $filtersdb);
    $data = null;
 
    $catalog = \fxc\catalogHtml($composers, $works, $albums, $records, $filters, $user != []);
