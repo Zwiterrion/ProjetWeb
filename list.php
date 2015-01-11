@@ -174,7 +174,7 @@ class SortedList extends DoublyLinkedList
 	 }
 
 	 $item->insertBefore(new KeyValue($k,$v));
-	 if ($Max > 0 && $this->count() > $this->Max)
+	 if ($this->Max > 0 && $this->count() > $this->Max)
 	    $this->pop();
       }
    }
