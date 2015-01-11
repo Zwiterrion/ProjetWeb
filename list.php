@@ -158,7 +158,7 @@ class KeyValue
 
 class SortedList extends DoublyLinkedList
 {
-   public $Max = 10;
+   public $Max = -1;
 
    public function addSorted($k, $v)
    {
@@ -174,8 +174,7 @@ class SortedList extends DoublyLinkedList
 	 }
 
 	 $item->insertBefore(new KeyValue($k,$v));
-
-	 if ($this->count() > $this->Max)
+	 if ($Max > 0 && $this->count() > $this->Max)
 	    $this->pop();
       }
    }

@@ -190,7 +190,11 @@ class Data {
       $q->execute(array_values($filters));
       
       $res = new SortedList();
-      $res->Max = 20;
+
+      if (count($filters) == 0)
+         $res->Max = 20;
+      else
+         $res->Max = -1;
 
       if ($search != '')
 	 while ($row = $q->fetch())
