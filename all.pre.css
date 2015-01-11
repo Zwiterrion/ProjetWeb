@@ -591,6 +591,8 @@ body.form > form h1 {
     font-size: 75%;
     color: black;
     background-color: rgba(255,255,255,0.4);
+    height: 3em;
+    overflow: hidden;
 }
 .amazon > * {
     margin: 0 15px;
@@ -603,6 +605,7 @@ body.form > form h1 {
     display: -ms-flexbox;
     display: flex;
     max-width: 22%;
+    height: 3em;
 }
 .amazon a > img {
     height: 3em;

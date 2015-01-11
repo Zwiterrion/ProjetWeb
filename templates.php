@@ -90,11 +90,11 @@ function catalogHtml($composers, $works, $albums, $records, $filters, $cart)
 
 function amazonHtml($a)
 {
-   return Div(class_('amazon'),h4("à voir sur amazon"),
-              A(href($a[1]), Img(src($a[2])), Span($a[0])),
-              A(href($a[4]), Img(src($a[5])), Span($a[3])),
-              A(href($a[7]), Img(src($a[8])), Span($a[6])) );
-   
+   return Div(class_('amazon'), 
+              H4("à voir sur amazon"),
+              forH($a, function($k, $v) {
+      return A(href($v[0]), Img(src($v[1])), Span($v[2]));
+              } ));
 }
 
 function cartButton($id, $checked)

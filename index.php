@@ -63,8 +63,11 @@ else
    $amazon = '';
    if (count($filtersdb) > 0)
    {
-      $as = ($composers->count() > 0) ? $composers->First->Elem->Value['str2'] : 'symphonique';
-      $amazon = fxc\amazonHtml( search_amazon($as) );
+      $as = ($composers->count() > 0) ? $composers->First->Elem->Value['str2'] : '';
+      $as = ($as != '') ? $as : 'symphonique';
+      
+      $res = search_amazon($as);
+      $amazon = ($res != []) ? fxc\amazonHtml( $res ) : '';
    }
 
    $body = fxc\concat($catalog, $amazon);

@@ -23,10 +23,10 @@ use ApaiIO\Configuration\GenericConfiguration;
 use ApaiIO\Operations\Search;
 
 function search_amazon($value) {
-  $conf = new GenericConfiguration();
+   $conf = new GenericConfiguration();
 
-  try {
-    $conf
+   try {
+      $conf
     ->setCountry('fr')
     ->setAccessKey(AWS_API_KEY)
     ->setSecretKey(AWS_API_SECRET_KEY)
@@ -34,86 +34,80 @@ function search_amazon($value) {
     ->setRequest('\ApaiIO\Request\Soap\Request')
     ->setResponseTransformer('\ApaiIO\ResponseTransformer\ObjectToArray');
 
-  } catch (\Exception $e) {
-    echo $e->getMessage();
-  }
-  $apaiIO = new ApaiIO($conf);
+   } catch (\Exception $e) {
+      echo $e->getMessage();
+   }
+   $apaiIO = new ApaiIO($conf);
 
-  $search = new Search();
-  $search->setCategory('Music');
-  $search->setKeywords(explode(' ',$value)[0]);
-  $search->setPage(3);
-  $search->setResponseGroup(array('Large', 'Small'));
+   $search = new Search();
+   $search->setCategory('Music');
+   $search->setKeywords($value);
 
+   $search->setPage(1);
+   $search->setResponseGroup(array('Large', 'Small'));
 
    $formattedResponse = $apaiIO->runOperation($search);
-
+   if (! isset($formattedResponse['Items']['Item']))
+      return [];
 
    $items = $formattedResponse['Items']['Item'];
 
-  $compteur = 3;
+   $compteur = 3;
 
-  $arrayretour = array();
-  foreach ($items as $item) {
-   if($compteur > 0){
-    $features = $item['ItemAttributes'];
-    $url = $item['DetailPageURL'];
-    $title = $features['Title'];	
-    $image = $item['MediumImage'];
-    $img = $image['URL']; 
-    $picture = $img;
-		// $descrip = ' ';
-		// foreach ($features['Feature'] as $var) {
-		// 	$descrip .= '<br/>' .$var;
-		// }
-		// echo $descrip;
-    $arrayretour[] = $title; 
-    $arrayretour[] = $url;
-    $arrayretour[] = $picture;
+   $res = [];
+   foreach ($items as $item) {
+      if($compteur == 0)
+         break;
+      
+      $features = $item['ItemAttributes'];
+      $url = $item['DetailPageURL'];
+      $title = $features['Title'];
+      $image = $item['SmallImage'];
+      $img = $image['URL'];
 
-    $compteur--;
-    }
-  }
-  return $arrayretour;
+      $res[] = [$url, $img, $title];
+      $compteur--;
+   }
+   return $res;
 }
 
 
 /*
    'Offers' => 
-        array (size=4)
-          'TotalOffers' => int 1
-          'TotalOfferPages' => int 1
-          'MoreOffersUrl' => string 'http://www.amazon.fr/gp/offer-listing/B00HWX1S54%3FSubscriptionId%3DAKIAILHU4BLBWKCGY46Q%26tag%3Dzwitterion-20%26linkCode%3Dsp1%26camp%3D2025%26creative%3D12742%26creativeASIN%3DB00HWX1S54' (length=188)
-          'Offer' => 
-            array (size=2)
+   array (size=4)
+   'TotalOffers' => int 1
+   'TotalOfferPages' => int 1
+   'MoreOffersUrl' => string 'http://www.amazon.fr/gp/offer-listing/B00HWX1S54%3FSubscriptionId%3DAKIAILHU4BLBWKCGY46Q%26tag%3Dzwitterion-20%26linkCode%3Dsp1%26camp%3D2025%26creative%3D12742%26creativeASIN%3DB00HWX1S54' (length=188)
+   'Offer' => 
+   array (size=2)
 
 
-      'ItemAttributes' => 
-        array (size=16)
-          'Binding' => string 'VÃªtements' (length=10)
-          'Brand' => string 'Yummy Bee' (length=9)
-          'ClothingSize' => string '38/40' (length=5)
-          'Color' => string 'Noir' (length=4)
-          'Department' => string 'femme' (length=5)
-          'EAN' => string '5055738416499' (length=13)
-          'EANList' => 
-            array (size=1)
-              ...
-          'Feature' => 
-            array (size=4)
-              ...
-          'IsAdultProduct' => boolean false
-          'MPN' => string '5055738416499' (length=13)
-          'PackageDimensions' => 
-            array (size=4)
-              ...
-          'PartNumber' => string '5055738416499' (length=13)
-          'ProductGroup' => string 'Apparel' (length=7)
-          'ProductTypeName' => string 'UNDERWEAR' (length=9)
-          'Size' => string '38/40' (length=5)
-          'Title' => string 'Yummy Bee - Nuisette satin + String + dentelle haut bas Lingerie Sexy - Noir rouge violet - grande taille 38-56 (noir,38-40)' (length=124)
+   'ItemAttributes' => 
+   array (size=16)
+   'Binding' => string 'VÃªtements' (length=10)
+   'Brand' => string 'Yummy Bee' (length=9)
+   'ClothingSize' => string '38/40' (length=5)
+   'Color' => string 'Noir' (length=4)
+   'Department' => string 'femme' (length=5)
+   'EAN' => string '5055738416499' (length=13)
+   'EANList' => 
+   array (size=1)
+   ...
+   'Feature' => 
+   array (size=4)
+   ...
+   'IsAdultProduct' => boolean false
+   'MPN' => string '5055738416499' (length=13)
+   'PackageDimensions' => 
+   array (size=4)
+   ...
+   'PartNumber' => string '5055738416499' (length=13)
+   'ProductGroup' => string 'Apparel' (length=7)
+   'ProductTypeName' => string 'UNDERWEAR' (length=9)
+   'Size' => string '38/40' (length=5)
+   'Title' => string 'Yummy Bee - Nuisette satin + String + dentelle haut bas Lingerie Sexy - Noir rouge violet - grande taille 38-56 (noir,38-40)' (length=124)
 
 
 
-*/
+ */
 
